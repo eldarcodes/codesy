@@ -1,0 +1,25 @@
+{
+  "name": "codesy",
+  "version": "0.0.1",
+  "description": "Built for Developers to code review",
+  "keywords": [
+    "typescript",
+    "code",
+    "graphql"
+  ],
+  "devDependencies": {
+    "@types/node": "^15.0.2",
+    "ts-node": "9.1.1",
+    "typescript": "4.2.4"
+  },
+  "dependencies": {
+    "pg": "^8.4.0",
+    "reflect-metadata": "^0.1.10",
+    "typeorm": "0.2.32"
+  },
+  "license": "MIT",
+  "author": "Eldar Mirzabekov",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  }
+}

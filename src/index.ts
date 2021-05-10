@@ -1,24 +1,16 @@
 import "reflect-metadata";
 import * as Express from "express";
-import { ApolloServer, gql } from "apollo-server-express";
-
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => "hi",
-  },
-};
+import { ApolloServer } from "apollo-server-express";
+import { createDatabaseConn } from "./createDatabaseConn";
+import { createSchema } from "./createSchema";
 
 async function startApolloServer() {
   const app = Express();
+
+  await createDatabaseConn();
+
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema: createSchema(),
   });
 
   server.applyMiddleware({ app });

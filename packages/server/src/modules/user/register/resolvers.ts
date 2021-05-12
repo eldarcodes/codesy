@@ -1,6 +1,7 @@
 import { Resolvers } from "src/generated/graphql";
 import * as argon2 from "argon2";
 import { User } from "../../../entity/User";
+import { registerSchema } from "@codesy/common";
 
 const resolvers: Resolvers = {
   Mutation: {

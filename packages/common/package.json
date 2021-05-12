@@ -1,0 +1,17 @@
+{
+  "name": "@codesy/common",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "typings": "dist/index.d.ts",
+  "devDependencies": {
+    "@types/yup": "^0.29.11",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "yup": "^0.32.9"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
+}

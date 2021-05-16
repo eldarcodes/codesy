@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import * as Express from "express";
 import * as session from "express-session";
+import * as cors from "cors";
 import * as connectRedis from "connect-redis";
 import { ApolloServer } from "apollo-server-express";
 import { createDatabaseConn } from "./createDatabaseConn";
@@ -15,6 +16,13 @@ async function startApolloServer() {
   const app = Express();
 
   await createDatabaseConn();
+
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://localhost:3000",
+    })
+  );
 
   app.use(
     session({
@@ -43,10 +51,7 @@ async function startApolloServer() {
 
   server.applyMiddleware({
     app,
-    cors: {
-      credentials: true,
-      origin: "http://localhost:3000",
-    },
+    cors: false,
   });
 
   app.listen(4000, () =>

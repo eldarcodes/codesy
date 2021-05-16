@@ -8,6 +8,7 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@codesy/common": "1.0.0",
     "@apollo/client": "^3.3.18",
     "formik": "^2.2.6",
     "graphql": "^15.5.0",

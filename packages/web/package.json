@@ -5,11 +5,12 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@codesy/common": "1.0.0",
     "@apollo/client": "^3.3.18",
+    "@codesy/common": "1.0.0",
     "formik": "^2.2.6",
     "graphql": "^15.5.0",
     "isomorphic-unfetch": "^3.1.0",
@@ -21,6 +22,11 @@
     "semantic-ui-react": "^2.0.3"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.21.4",
+    "@graphql-codegen/introspection": "1.18.2",
+    "@graphql-codegen/typescript": "1.22.0",
+    "@graphql-codegen/typescript-operations": "^1.17.16",
+    "@graphql-codegen/typescript-react-apollo": "2.2.4",
     "@types/node": "^15.3.0",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",

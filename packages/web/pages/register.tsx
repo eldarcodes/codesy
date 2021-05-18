@@ -3,6 +3,8 @@ import { Button, Form } from "semantic-ui-react";
 import withApollo from "./../lib/withApollo";
 import { InputField } from "./../components/formik-fields/input";
 import { registerSchema } from "@codesy/common";
+import { useRegisterMutation } from "../generated/graphql";
+import { normalizeErrors } from "../utils/normalizeErrors";
 
 interface RegisterProps {}
 
@@ -13,14 +15,21 @@ interface FormValues {
 }
 
 const Register: React.FC<RegisterProps> = ({}) => {
-  const submit = (values: FormValues) => {
-    console.log(values);
-  };
+  const [register] = useRegisterMutation();
+  const submit = async (values: FormValues) => {};
 
   return (
-    <Formik
+    <Formik<FormValues>
       initialValues={{ username: "", email: "", password: "" } as FormValues}
-      onSubmit={submit}
+      onSubmit={async (input, { setErrors, setSubmitting }) => {
+        const response = await register({ variables: { input } });
+
+        if (response.data?.register.errors) {
+          setSubmitting(false);
+          setErrors(normalizeErrors(response.data?.register.errors));
+        } else {
+        }
+      }}
       validationSchema={registerSchema}
     >
       {({ handleSubmit }) => (

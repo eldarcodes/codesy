@@ -5,6 +5,7 @@ import { InputField } from "./../components/formik-fields/input";
 import { registerSchema } from "@codesy/common";
 import { useRegisterMutation } from "../generated/graphql";
 import { normalizeErrors } from "../utils/normalizeErrors";
+import { useRouter } from "next/dist/client/router";
 
 interface RegisterProps {}
 
@@ -15,8 +16,8 @@ interface FormValues {
 }
 
 const Register: React.FC<RegisterProps> = ({}) => {
+  const router = useRouter();
   const [register] = useRegisterMutation();
-  const submit = async (values: FormValues) => {};
 
   return (
     <Formik<FormValues>
@@ -28,6 +29,7 @@ const Register: React.FC<RegisterProps> = ({}) => {
           setSubmitting(false);
           setErrors(normalizeErrors(response.data?.register.errors));
         } else {
+          router.push("/login");
         }
       }}
       validationSchema={registerSchema}

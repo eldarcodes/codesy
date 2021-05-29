@@ -44,7 +44,6 @@
   "author": "Eldar Mirzabekov",
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
-    "dev": "ts-node --exec ts-node src/index.ts",
     "gen": "graphql-codegen --config codegen.yml"
   }
 }

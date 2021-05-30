@@ -25,7 +25,7 @@ const Register: React.FC<RegisterProps> = ({}) => {
       onSubmit={async (input, { setErrors, setSubmitting }) => {
         const response = await register({ variables: { input } });
 
-        if (response.data?.register.errors) {
+        if (response.data?.register.errors?.length) {
           setSubmitting(false);
           setErrors(normalizeErrors(response.data?.register.errors));
         } else {

@@ -23,7 +23,7 @@ const Login: React.FC<LoginProps> = ({}) => {
       onSubmit={async (input, { setErrors, setSubmitting }) => {
         const response = await login({ variables: { input } });
 
-        if (response.data?.login.errors) {
+        if (response.data?.login.errors?.length) {
           setSubmitting(false);
           setErrors(normalizeErrors(response.data?.login.errors));
         } else {

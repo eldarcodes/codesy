@@ -31,7 +31,7 @@ const Login: React.FC<LoginProps> = ({}) => {
         }
       }}
     >
-      {({ handleSubmit }) => (
+      {({ handleSubmit, isSubmitting }) => (
         <Form onSubmit={handleSubmit}>
           <Field
             label="Username or E-mail"
@@ -47,7 +47,7 @@ const Login: React.FC<LoginProps> = ({}) => {
             type="password"
           />
 
-          <Button type="submit" primary>
+          <Button type="submit" disabled={isSubmitting} primary>
             Login
           </Button>
         </Form>

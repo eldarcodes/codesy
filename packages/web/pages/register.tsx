@@ -34,7 +34,7 @@ const Register: React.FC<RegisterProps> = ({}) => {
       }}
       validationSchema={registerSchema}
     >
-      {({ handleSubmit }) => (
+      {({ handleSubmit, isSubmitting }) => (
         <Form onSubmit={handleSubmit}>
           <Field
             label="Username"
@@ -56,7 +56,7 @@ const Register: React.FC<RegisterProps> = ({}) => {
             type="password"
           />
 
-          <Button type="submit" primary>
+          <Button type="submit" disabled={isSubmitting} primary>
             Create Account
           </Button>
         </Form>

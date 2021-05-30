@@ -2,50 +2,41 @@ import { Field, Formik } from "formik";
 import { Button, Form } from "semantic-ui-react";
 import withApollo from "./../lib/withApollo";
 import { InputField } from "./../components/formik-fields/input";
-import { registerSchema } from "@codesy/common";
-import { useRegisterMutation } from "../generated/graphql";
+import { useLoginMutation } from "../generated/graphql";
 import { normalizeErrors } from "../utils/normalizeErrors";
 import { useRouter } from "next/dist/client/router";
 
-interface RegisterProps {}
+interface LoginProps {}
 
 interface FormValues {
-  username: string;
-  email: string;
+  usernameOrEmail: string;
   password: string;
 }
 
-const Register: React.FC<RegisterProps> = ({}) => {
+const Login: React.FC<LoginProps> = ({}) => {
   const router = useRouter();
-  const [register] = useRegisterMutation();
+  const [login] = useLoginMutation();
 
   return (
     <Formik<FormValues>
-      initialValues={{ username: "", email: "", password: "" } as FormValues}
+      initialValues={{ usernameOrEmail: "", password: "" } as FormValues}
       onSubmit={async (input, { setErrors, setSubmitting }) => {
-        const response = await register({ variables: { input } });
+        const response = await login({ variables: { input } });
 
-        if (response.data?.register.errors?.length) {
+        if (response.data?.login.errors?.length) {
           setSubmitting(false);
-          setErrors(normalizeErrors(response.data?.register.errors));
+          setErrors(normalizeErrors(response.data?.login.errors));
         } else {
-          router.push("/login");
+          router.push("/");
         }
       }}
-      validationSchema={registerSchema}
     >
       {({ handleSubmit, isSubmitting }) => (
         <Form onSubmit={handleSubmit}>
           <Field
-            label="Username"
-            placeholder="Username"
-            name="username"
-            component={InputField}
-          />
-          <Field
-            label="email"
-            placeholder="E-mail"
-            name="email"
+            label="Username or E-mail"
+            placeholder="Username or E-mail"
+            name="usernameOrEmail"
             component={InputField}
           />
           <Field
@@ -57,7 +48,7 @@ const Register: React.FC<RegisterProps> = ({}) => {
           />
 
           <Button type="submit" disabled={isSubmitting} primary>
-            Create Account
+            Login
           </Button>
         </Form>
       )}
@@ -65,4 +56,4 @@ const Register: React.FC<RegisterProps> = ({}) => {
   );
 };
 
-export default withApollo({ ssr: false })(Register);
+export default withApollo({ ssr: false })(Login);

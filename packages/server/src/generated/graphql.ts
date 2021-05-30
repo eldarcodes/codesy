@@ -50,6 +50,7 @@ export type MutationRegisterArgs = {
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
+  users?: Maybe<Array<Maybe<User>>>;
 };
 
 export type RegisterInput = {
@@ -195,6 +196,7 @@ export type MutationResolvers<ContextType = MyContext, ParentType extends Resolv
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 };
 
 export type RegisterResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['RegisterResponse'] = ResolversParentTypes['RegisterResponse']> = {

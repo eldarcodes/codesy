@@ -14,6 +14,28 @@ export type Scalars = {
   Float: number;
 };
 
+export type CodeReviewRequest = {
+  __typename?: 'CodeReviewRequest';
+  id: Scalars['ID'];
+  numDays?: Maybe<Scalars['Int']>;
+  codeUrl: Scalars['String'];
+  techTags: Array<Scalars['String']>;
+  notes: Scalars['String'];
+};
+
+export type CreateCodeReviewRequestInput = {
+  numDays?: Maybe<Scalars['Int']>;
+  codeUrl: Scalars['String'];
+  techTags: Array<Scalars['String']>;
+  notes: Scalars['String'];
+};
+
+export type CreateCodeReviewRequestResponse = {
+  __typename?: 'CreateCodeReviewRequestResponse';
+  errors?: Maybe<Array<Error>>;
+  codeReviewRequest?: Maybe<CodeReviewRequest>;
+};
+
 export type Error = {
   __typename?: 'Error';
   path: Scalars['String'];
@@ -33,8 +55,14 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createCodeReviewRequest: CreateCodeReviewRequestResponse;
   login: LoginResponse;
   register: RegisterResponse;
+};
+
+
+export type MutationCreateCodeReviewRequestArgs = {
+  input: CreateCodeReviewRequestInput;
 };
 
 
@@ -149,8 +177,13 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Error: ResolverTypeWrapper<Error>;
+  CodeReviewRequest: ResolverTypeWrapper<CodeReviewRequest>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  CreateCodeReviewRequestInput: CreateCodeReviewRequestInput;
+  CreateCodeReviewRequestResponse: ResolverTypeWrapper<CreateCodeReviewRequestResponse>;
+  Error: ResolverTypeWrapper<Error>;
   LoginInput: LoginInput;
   LoginResponse: ResolverTypeWrapper<LoginResponse>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -158,14 +191,18 @@ export type ResolversTypes = {
   RegisterInput: RegisterInput;
   RegisterResponse: ResolverTypeWrapper<RegisterResponse>;
   User: ResolverTypeWrapper<User>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Error: Error;
+  CodeReviewRequest: CodeReviewRequest;
+  ID: Scalars['ID'];
+  Int: Scalars['Int'];
   String: Scalars['String'];
+  CreateCodeReviewRequestInput: CreateCodeReviewRequestInput;
+  CreateCodeReviewRequestResponse: CreateCodeReviewRequestResponse;
+  Error: Error;
   LoginInput: LoginInput;
   LoginResponse: LoginResponse;
   Mutation: {};
@@ -173,8 +210,22 @@ export type ResolversParentTypes = {
   RegisterInput: RegisterInput;
   RegisterResponse: RegisterResponse;
   User: User;
-  ID: Scalars['ID'];
   Boolean: Scalars['Boolean'];
+};
+
+export type CodeReviewRequestResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CodeReviewRequest'] = ResolversParentTypes['CodeReviewRequest']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  numDays?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  codeUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  techTags?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  notes?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CreateCodeReviewRequestResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CreateCodeReviewRequestResponse'] = ResolversParentTypes['CreateCodeReviewRequestResponse']> = {
+  errors?: Resolver<Maybe<Array<ResolversTypes['Error']>>, ParentType, ContextType>;
+  codeReviewRequest?: Resolver<Maybe<ResolversTypes['CodeReviewRequest']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ErrorResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Error'] = ResolversParentTypes['Error']> = {
@@ -190,6 +241,7 @@ export type LoginResponseResolvers<ContextType = MyContext, ParentType extends R
 };
 
 export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createCodeReviewRequest?: Resolver<ResolversTypes['CreateCodeReviewRequestResponse'], ParentType, ContextType, RequireFields<MutationCreateCodeReviewRequestArgs, 'input'>>;
   login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   register?: Resolver<ResolversTypes['RegisterResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
 };
@@ -212,6 +264,8 @@ export type UserResolvers<ContextType = MyContext, ParentType extends ResolversP
 };
 
 export type Resolvers<ContextType = MyContext> = {
+  CodeReviewRequest?: CodeReviewRequestResolvers<ContextType>;
+  CreateCodeReviewRequestResponse?: CreateCodeReviewRequestResponseResolvers<ContextType>;
   Error?: ErrorResolvers<ContextType>;
   LoginResponse?: LoginResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;

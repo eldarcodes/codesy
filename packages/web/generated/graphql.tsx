@@ -14,6 +14,28 @@ export type Scalars = {
   Float: number;
 };
 
+export type CodeReviewRequest = {
+  __typename?: 'CodeReviewRequest';
+  id: Scalars['ID'];
+  numDays?: Maybe<Scalars['Int']>;
+  codeUrl: Scalars['String'];
+  techTags: Array<Scalars['String']>;
+  notes: Scalars['String'];
+};
+
+export type CreateCodeReviewRequestInput = {
+  numDays?: Maybe<Scalars['Int']>;
+  codeUrl: Scalars['String'];
+  techTags: Array<Scalars['String']>;
+  notes: Scalars['String'];
+};
+
+export type CreateCodeReviewRequestResponse = {
+  __typename?: 'CreateCodeReviewRequestResponse';
+  errors?: Maybe<Array<Error>>;
+  codeReviewRequest?: Maybe<CodeReviewRequest>;
+};
+
 export type Error = {
   __typename?: 'Error';
   path: Scalars['String'];
@@ -33,8 +55,14 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createCodeReviewRequest: CreateCodeReviewRequestResponse;
   login: LoginResponse;
   register: RegisterResponse;
+};
+
+
+export type MutationCreateCodeReviewRequestArgs = {
+  input: CreateCodeReviewRequestInput;
 };
 
 
@@ -70,6 +98,25 @@ export type User = {
   username: Scalars['String'];
   email: Scalars['String'];
 };
+
+export type CreateCodeReviewRequestMutationVariables = Exact<{
+  input: CreateCodeReviewRequestInput;
+}>;
+
+
+export type CreateCodeReviewRequestMutation = (
+  { __typename?: 'Mutation' }
+  & { createCodeReviewRequest: (
+    { __typename?: 'CreateCodeReviewRequestResponse' }
+    & { codeReviewRequest?: Maybe<(
+      { __typename?: 'CodeReviewRequest' }
+      & Pick<CodeReviewRequest, 'id' | 'numDays' | 'codeUrl' | 'techTags' | 'notes'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'Error' }
+      & Pick<Error, 'path' | 'message'>
+    )>> }
+  ) }
+);
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
@@ -118,6 +165,49 @@ export type MeQuery = (
 );
 
 
+export const CreateCodeReviewRequestDocument = gql`
+    mutation CreateCodeReviewRequest($input: CreateCodeReviewRequestInput!) {
+  createCodeReviewRequest(input: $input) {
+    codeReviewRequest {
+      id
+      numDays
+      codeUrl
+      techTags
+      notes
+    }
+    errors {
+      path
+      message
+    }
+  }
+}
+    `;
+export type CreateCodeReviewRequestMutationFn = Apollo.MutationFunction<CreateCodeReviewRequestMutation, CreateCodeReviewRequestMutationVariables>;
+
+/**
+ * __useCreateCodeReviewRequestMutation__
+ *
+ * To run a mutation, you first call `useCreateCodeReviewRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCodeReviewRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCodeReviewRequestMutation, { data, loading, error }] = useCreateCodeReviewRequestMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateCodeReviewRequestMutation(baseOptions?: Apollo.MutationHookOptions<CreateCodeReviewRequestMutation, CreateCodeReviewRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCodeReviewRequestMutation, CreateCodeReviewRequestMutationVariables>(CreateCodeReviewRequestDocument, options);
+      }
+export type CreateCodeReviewRequestMutationHookResult = ReturnType<typeof useCreateCodeReviewRequestMutation>;
+export type CreateCodeReviewRequestMutationResult = Apollo.MutationResult<CreateCodeReviewRequestMutation>;
+export type CreateCodeReviewRequestMutationOptions = Apollo.BaseMutationOptions<CreateCodeReviewRequestMutation, CreateCodeReviewRequestMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   login(input: $input) {

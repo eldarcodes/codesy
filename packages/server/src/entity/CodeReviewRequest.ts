@@ -9,7 +9,7 @@ import {
 import { User } from "./User";
 
 @Entity()
-export class CodeRequest extends BaseEntity {
+export class CodeReviewRequest extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 

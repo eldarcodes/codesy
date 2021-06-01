@@ -77,6 +77,7 @@ export type MutationRegisterArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  listCodeReviewRequests: Array<CodeReviewRequest>;
   me?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
 };
@@ -247,6 +248,7 @@ export type MutationResolvers<ContextType = MyContext, ParentType extends Resolv
 };
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  listCodeReviewRequests?: Resolver<Array<ResolversTypes['CodeReviewRequest']>, ParentType, ContextType>;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 };

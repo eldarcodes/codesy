@@ -1,4 +1,3 @@
-import { CodeReviewRequest } from "src/generated/graphql";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,7 +5,7 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { CodeRequest } from "./CodeReviewRequest";
+import { CodeReviewRequest } from "./CodeReviewRequest";
 
 @Entity()
 export class User extends BaseEntity {
@@ -22,6 +21,6 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @OneToMany(() => CodeRequest, (codeRequest) => codeRequest.user)
+  @OneToMany(() => CodeReviewRequest, (codeRequest) => codeRequest.user)
   codeReviewRequests: CodeReviewRequest[];
 }

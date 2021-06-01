@@ -1,4 +1,4 @@
-import { CodeRequest } from "../../../entity/CodeReviewRequest";
+import { CodeReviewRequest } from "../../../entity/CodeReviewRequest";
 import { Resolvers } from "../../../generated/graphql";
 
 const resolvers: Resolvers = {
@@ -6,7 +6,7 @@ const resolvers: Resolvers = {
     createCodeReviewRequest: async (_, { input }, { req }) => {
       const { numDays } = input;
 
-      const codeReviewRequest = await CodeRequest.create({
+      const codeReviewRequest = await CodeReviewRequest.create({
         ...input,
         numDays: numDays || undefined,
         owner: (req.session as any).userId,

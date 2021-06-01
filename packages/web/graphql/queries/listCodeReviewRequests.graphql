@@ -1,0 +1,5 @@
+query ListCodeReviewRequests {
+  listCodeReviewRequests {
+    ...CodeReviewRequestInfo
+  }
+}

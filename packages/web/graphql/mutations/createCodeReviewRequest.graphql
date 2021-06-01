@@ -1,11 +1,7 @@
 mutation CreateCodeReviewRequest($input: CreateCodeReviewRequestInput!) {
   createCodeReviewRequest(input: $input) {
     codeReviewRequest {
-      id
-      numDays
-      codeUrl
-      techTags
-      notes
+      ...CodeReviewRequestInfo
     }
     errors {
       path

@@ -50,18 +50,6 @@ const CreateCodeReviewRequest: React.FC<CreateCodeReviewRequestProps> =
               component={InputField}
             />
             <Field
-              label="Code URL"
-              placeholder="Code URL"
-              name="codeUrl"
-              component={InputField}
-            />
-            <Field
-              label="Code URL"
-              placeholder="Code URL"
-              name="codeUrl"
-              component={InputField}
-            />
-            <Field
               label="GitHub URL"
               placeholder="GitHub URL"
               name="codeUrl"

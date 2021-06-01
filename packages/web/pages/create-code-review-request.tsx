@@ -1,10 +1,11 @@
 import { Field, Formik } from "formik";
 import { Button, Form } from "semantic-ui-react";
 import withApollo from "./../lib/withApollo";
-import { InputField } from "./../components/formik-fields/input";
+import { InputField } from "../components/formik-fields/InputField";
 import { useCreateCodeReviewRequestMutation } from "../generated/graphql";
 import { normalizeErrors } from "../utils/normalizeErrors";
 import { useRouter } from "next/dist/client/router";
+import { TextAreaField } from "../components/formik-fields/TextAreaField";
 
 interface CreateCodeReviewRequestProps {}
 
@@ -65,6 +66,12 @@ const CreateCodeReviewRequest: React.FC<CreateCodeReviewRequestProps> =
               placeholder="GitHub URL"
               name="codeUrl"
               component={InputField}
+            />
+            <Field
+              label="Notes"
+              placeholder="Notes"
+              name="notes"
+              component={TextAreaField}
             />
 
             <Button type="submit" disabled={isSubmitting} primary>

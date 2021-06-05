@@ -1,0 +1,5 @@
+mutation CreateOffer($input: CreateOfferInput!) {
+  createOffer(input: $input) {
+    ok
+  }
+}

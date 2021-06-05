@@ -27,7 +27,7 @@ const Login: React.FC<LoginProps> = ({}) => {
           setSubmitting(false);
           setErrors(normalizeErrors(response.data?.login.errors));
         } else {
-          router.push("/create-code-review-request");
+          router.push("/create-code-review");
         }
       }}
     >

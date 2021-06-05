@@ -1,7 +1,0 @@
-fragment CodeReviewRequestInfo on CodeReviewRequest {
-  id
-  numDays
-  codeUrl
-  techTags
-  notes
-}

@@ -19,6 +19,6 @@ const standartMiddleWare: IMiddlewareFunction = async (
 
 export const middleware: IMiddlewareTypeMap = {
   Mutation: {
-    createCodeReviewRequest: standartMiddleWare,
+    createCodeReview: standartMiddleWare,
   },
 };

@@ -5,11 +5,13 @@ import {
   BaseEntity,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from "typeorm";
 import { User } from "./User";
+import { Offer } from "./Offer";
 
 @Entity()
-export class CodeReviewRequest extends BaseEntity {
+export class CodeReview extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -28,7 +30,10 @@ export class CodeReviewRequest extends BaseEntity {
   @Column()
   ownerId: string;
 
-  @ManyToOne(() => User, (user) => user.codeReviewRequests)
+  @ManyToOne(() => User, (user) => user.codeReviews)
   @JoinColumn({ name: "ownerId" })
   user: Promise<User>;
+
+  @OneToMany(() => Offer, (offer) => offer.codeReview)
+  offers: Offer[];
 }

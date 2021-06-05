@@ -1,0 +1,10 @@
+query ListCodeReviews {
+  listCodeReviews {
+    ...CodeReviewInfo
+    owner {
+      id
+      email
+      username
+    }
+  }
+}

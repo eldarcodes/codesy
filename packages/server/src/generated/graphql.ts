@@ -14,8 +14,8 @@ export type Scalars = {
   Float: number;
 };
 
-export type CodeReviewRequest = {
-  __typename?: 'CodeReviewRequest';
+export type CodeReview = {
+  __typename?: 'CodeReview';
   id: Scalars['ID'];
   numDays?: Maybe<Scalars['Int']>;
   codeUrl: Scalars['String'];
@@ -25,17 +25,27 @@ export type CodeReviewRequest = {
   owner: User;
 };
 
-export type CreateCodeReviewRequestInput = {
+export type CreateCodeReviewInput = {
   numDays?: Maybe<Scalars['Int']>;
   codeUrl: Scalars['String'];
   techTags: Array<Scalars['String']>;
   notes: Scalars['String'];
 };
 
-export type CreateCodeReviewRequestResponse = {
-  __typename?: 'CreateCodeReviewRequestResponse';
+export type CreateCodeReviewResponse = {
+  __typename?: 'CreateCodeReviewResponse';
   errors?: Maybe<Array<Error>>;
-  codeReviewRequest?: Maybe<CodeReviewRequest>;
+  codeReview?: Maybe<CodeReview>;
+};
+
+export type CreateOfferInput = {
+  userId: Scalars['String'];
+  codeReviewId: Scalars['String'];
+};
+
+export type CreateOfferResponse = {
+  __typename?: 'CreateOfferResponse';
+  ok: Scalars['Boolean'];
 };
 
 export type Error = {
@@ -57,14 +67,20 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createCodeReviewRequest: CreateCodeReviewRequestResponse;
+  createCodeReview: CreateCodeReviewResponse;
+  createOffer: CreateOfferResponse;
   login: LoginResponse;
   register: RegisterResponse;
 };
 
 
-export type MutationCreateCodeReviewRequestArgs = {
-  input: CreateCodeReviewRequestInput;
+export type MutationCreateCodeReviewArgs = {
+  input: CreateCodeReviewInput;
+};
+
+
+export type MutationCreateOfferArgs = {
+  input: CreateOfferInput;
 };
 
 
@@ -79,7 +95,7 @@ export type MutationRegisterArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  listCodeReviewRequests: Array<CodeReviewRequest>;
+  listCodeReviews: Array<CodeReview>;
   me?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
 };
@@ -180,12 +196,15 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  CodeReviewRequest: ResolverTypeWrapper<CodeReviewRequest>;
+  CodeReview: ResolverTypeWrapper<CodeReview>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   String: ResolverTypeWrapper<Scalars['String']>;
-  CreateCodeReviewRequestInput: CreateCodeReviewRequestInput;
-  CreateCodeReviewRequestResponse: ResolverTypeWrapper<CreateCodeReviewRequestResponse>;
+  CreateCodeReviewInput: CreateCodeReviewInput;
+  CreateCodeReviewResponse: ResolverTypeWrapper<CreateCodeReviewResponse>;
+  CreateOfferInput: CreateOfferInput;
+  CreateOfferResponse: ResolverTypeWrapper<CreateOfferResponse>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Error: ResolverTypeWrapper<Error>;
   LoginInput: LoginInput;
   LoginResponse: ResolverTypeWrapper<LoginResponse>;
@@ -194,17 +213,19 @@ export type ResolversTypes = {
   RegisterInput: RegisterInput;
   RegisterResponse: ResolverTypeWrapper<RegisterResponse>;
   User: ResolverTypeWrapper<User>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  CodeReviewRequest: CodeReviewRequest;
+  CodeReview: CodeReview;
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   String: Scalars['String'];
-  CreateCodeReviewRequestInput: CreateCodeReviewRequestInput;
-  CreateCodeReviewRequestResponse: CreateCodeReviewRequestResponse;
+  CreateCodeReviewInput: CreateCodeReviewInput;
+  CreateCodeReviewResponse: CreateCodeReviewResponse;
+  CreateOfferInput: CreateOfferInput;
+  CreateOfferResponse: CreateOfferResponse;
+  Boolean: Scalars['Boolean'];
   Error: Error;
   LoginInput: LoginInput;
   LoginResponse: LoginResponse;
@@ -213,10 +234,9 @@ export type ResolversParentTypes = {
   RegisterInput: RegisterInput;
   RegisterResponse: RegisterResponse;
   User: User;
-  Boolean: Scalars['Boolean'];
 };
 
-export type CodeReviewRequestResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CodeReviewRequest'] = ResolversParentTypes['CodeReviewRequest']> = {
+export type CodeReviewResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CodeReview'] = ResolversParentTypes['CodeReview']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   numDays?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   codeUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -227,9 +247,14 @@ export type CodeReviewRequestResolvers<ContextType = MyContext, ParentType exten
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateCodeReviewRequestResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CreateCodeReviewRequestResponse'] = ResolversParentTypes['CreateCodeReviewRequestResponse']> = {
+export type CreateCodeReviewResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CreateCodeReviewResponse'] = ResolversParentTypes['CreateCodeReviewResponse']> = {
   errors?: Resolver<Maybe<Array<ResolversTypes['Error']>>, ParentType, ContextType>;
-  codeReviewRequest?: Resolver<Maybe<ResolversTypes['CodeReviewRequest']>, ParentType, ContextType>;
+  codeReview?: Resolver<Maybe<ResolversTypes['CodeReview']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CreateOfferResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CreateOfferResponse'] = ResolversParentTypes['CreateOfferResponse']> = {
+  ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -246,13 +271,14 @@ export type LoginResponseResolvers<ContextType = MyContext, ParentType extends R
 };
 
 export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createCodeReviewRequest?: Resolver<ResolversTypes['CreateCodeReviewRequestResponse'], ParentType, ContextType, RequireFields<MutationCreateCodeReviewRequestArgs, 'input'>>;
+  createCodeReview?: Resolver<ResolversTypes['CreateCodeReviewResponse'], ParentType, ContextType, RequireFields<MutationCreateCodeReviewArgs, 'input'>>;
+  createOffer?: Resolver<ResolversTypes['CreateOfferResponse'], ParentType, ContextType, RequireFields<MutationCreateOfferArgs, 'input'>>;
   login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   register?: Resolver<ResolversTypes['RegisterResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  listCodeReviewRequests?: Resolver<Array<ResolversTypes['CodeReviewRequest']>, ParentType, ContextType>;
+  listCodeReviews?: Resolver<Array<ResolversTypes['CodeReview']>, ParentType, ContextType>;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 };
@@ -270,8 +296,9 @@ export type UserResolvers<ContextType = MyContext, ParentType extends ResolversP
 };
 
 export type Resolvers<ContextType = MyContext> = {
-  CodeReviewRequest?: CodeReviewRequestResolvers<ContextType>;
-  CreateCodeReviewRequestResponse?: CreateCodeReviewRequestResponseResolvers<ContextType>;
+  CodeReview?: CodeReviewResolvers<ContextType>;
+  CreateCodeReviewResponse?: CreateCodeReviewResponseResolvers<ContextType>;
+  CreateOfferResponse?: CreateOfferResponseResolvers<ContextType>;
   Error?: ErrorResolvers<ContextType>;
   LoginResponse?: LoginResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;

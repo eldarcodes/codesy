@@ -14,8 +14,8 @@ export type Scalars = {
   Float: number;
 };
 
-export type CodeReviewRequest = {
-  __typename?: 'CodeReviewRequest';
+export type CodeReview = {
+  __typename?: 'CodeReview';
   id: Scalars['ID'];
   numDays?: Maybe<Scalars['Int']>;
   codeUrl: Scalars['String'];
@@ -25,17 +25,27 @@ export type CodeReviewRequest = {
   owner: User;
 };
 
-export type CreateCodeReviewRequestInput = {
+export type CreateCodeReviewInput = {
   numDays?: Maybe<Scalars['Int']>;
   codeUrl: Scalars['String'];
   techTags: Array<Scalars['String']>;
   notes: Scalars['String'];
 };
 
-export type CreateCodeReviewRequestResponse = {
-  __typename?: 'CreateCodeReviewRequestResponse';
+export type CreateCodeReviewResponse = {
+  __typename?: 'CreateCodeReviewResponse';
   errors?: Maybe<Array<Error>>;
-  codeReviewRequest?: Maybe<CodeReviewRequest>;
+  codeReview?: Maybe<CodeReview>;
+};
+
+export type CreateOfferInput = {
+  userId: Scalars['String'];
+  codeReviewId: Scalars['String'];
+};
+
+export type CreateOfferResponse = {
+  __typename?: 'CreateOfferResponse';
+  ok: Scalars['Boolean'];
 };
 
 export type Error = {
@@ -57,14 +67,20 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createCodeReviewRequest: CreateCodeReviewRequestResponse;
+  createCodeReview: CreateCodeReviewResponse;
+  createOffer: CreateOfferResponse;
   login: LoginResponse;
   register: RegisterResponse;
 };
 
 
-export type MutationCreateCodeReviewRequestArgs = {
-  input: CreateCodeReviewRequestInput;
+export type MutationCreateCodeReviewArgs = {
+  input: CreateCodeReviewInput;
+};
+
+
+export type MutationCreateOfferArgs = {
+  input: CreateOfferInput;
 };
 
 
@@ -79,7 +95,7 @@ export type MutationRegisterArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  listCodeReviewRequests: Array<CodeReviewRequest>;
+  listCodeReviews: Array<CodeReview>;
   me?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
 };
@@ -102,27 +118,40 @@ export type User = {
   email: Scalars['String'];
 };
 
-export type CodeReviewRequestInfoFragment = (
-  { __typename?: 'CodeReviewRequest' }
-  & Pick<CodeReviewRequest, 'id' | 'numDays' | 'codeUrl' | 'techTags' | 'notes'>
+export type CodeReviewInfoFragment = (
+  { __typename?: 'CodeReview' }
+  & Pick<CodeReview, 'id' | 'numDays' | 'codeUrl' | 'techTags' | 'notes'>
 );
 
-export type CreateCodeReviewRequestMutationVariables = Exact<{
-  input: CreateCodeReviewRequestInput;
+export type CreateCodeReviewMutationVariables = Exact<{
+  input: CreateCodeReviewInput;
 }>;
 
 
-export type CreateCodeReviewRequestMutation = (
+export type CreateCodeReviewMutation = (
   { __typename?: 'Mutation' }
-  & { createCodeReviewRequest: (
-    { __typename?: 'CreateCodeReviewRequestResponse' }
-    & { codeReviewRequest?: Maybe<(
-      { __typename?: 'CodeReviewRequest' }
-      & CodeReviewRequestInfoFragment
+  & { createCodeReview: (
+    { __typename?: 'CreateCodeReviewResponse' }
+    & { codeReview?: Maybe<(
+      { __typename?: 'CodeReview' }
+      & CodeReviewInfoFragment
     )>, errors?: Maybe<Array<(
       { __typename?: 'Error' }
       & Pick<Error, 'path' | 'message'>
     )>> }
+  ) }
+);
+
+export type CreateOfferMutationVariables = Exact<{
+  input: CreateOfferInput;
+}>;
+
+
+export type CreateOfferMutation = (
+  { __typename?: 'Mutation' }
+  & { createOffer: (
+    { __typename?: 'CreateOfferResponse' }
+    & Pick<CreateOfferResponse, 'ok'>
   ) }
 );
 
@@ -161,18 +190,18 @@ export type RegisterMutation = (
   ) }
 );
 
-export type ListCodeReviewRequestsQueryVariables = Exact<{ [key: string]: never; }>;
+export type ListCodeReviewsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListCodeReviewRequestsQuery = (
+export type ListCodeReviewsQuery = (
   { __typename?: 'Query' }
-  & { listCodeReviewRequests: Array<(
-    { __typename?: 'CodeReviewRequest' }
+  & { listCodeReviews: Array<(
+    { __typename?: 'CodeReview' }
     & { owner: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'email' | 'username'>
     ) }
-    & CodeReviewRequestInfoFragment
+    & CodeReviewInfoFragment
   )> }
 );
 
@@ -187,8 +216,8 @@ export type MeQuery = (
   )> }
 );
 
-export const CodeReviewRequestInfoFragmentDoc = gql`
-    fragment CodeReviewRequestInfo on CodeReviewRequest {
+export const CodeReviewInfoFragmentDoc = gql`
+    fragment CodeReviewInfo on CodeReview {
   id
   numDays
   codeUrl
@@ -196,11 +225,11 @@ export const CodeReviewRequestInfoFragmentDoc = gql`
   notes
 }
     `;
-export const CreateCodeReviewRequestDocument = gql`
-    mutation CreateCodeReviewRequest($input: CreateCodeReviewRequestInput!) {
-  createCodeReviewRequest(input: $input) {
-    codeReviewRequest {
-      ...CodeReviewRequestInfo
+export const CreateCodeReviewDocument = gql`
+    mutation CreateCodeReview($input: CreateCodeReviewInput!) {
+  createCodeReview(input: $input) {
+    codeReview {
+      ...CodeReviewInfo
     }
     errors {
       path
@@ -208,33 +237,66 @@ export const CreateCodeReviewRequestDocument = gql`
     }
   }
 }
-    ${CodeReviewRequestInfoFragmentDoc}`;
-export type CreateCodeReviewRequestMutationFn = Apollo.MutationFunction<CreateCodeReviewRequestMutation, CreateCodeReviewRequestMutationVariables>;
+    ${CodeReviewInfoFragmentDoc}`;
+export type CreateCodeReviewMutationFn = Apollo.MutationFunction<CreateCodeReviewMutation, CreateCodeReviewMutationVariables>;
 
 /**
- * __useCreateCodeReviewRequestMutation__
+ * __useCreateCodeReviewMutation__
  *
- * To run a mutation, you first call `useCreateCodeReviewRequestMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCodeReviewRequestMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateCodeReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCodeReviewMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createCodeReviewRequestMutation, { data, loading, error }] = useCreateCodeReviewRequestMutation({
+ * const [createCodeReviewMutation, { data, loading, error }] = useCreateCodeReviewMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateCodeReviewRequestMutation(baseOptions?: Apollo.MutationHookOptions<CreateCodeReviewRequestMutation, CreateCodeReviewRequestMutationVariables>) {
+export function useCreateCodeReviewMutation(baseOptions?: Apollo.MutationHookOptions<CreateCodeReviewMutation, CreateCodeReviewMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCodeReviewRequestMutation, CreateCodeReviewRequestMutationVariables>(CreateCodeReviewRequestDocument, options);
+        return Apollo.useMutation<CreateCodeReviewMutation, CreateCodeReviewMutationVariables>(CreateCodeReviewDocument, options);
       }
-export type CreateCodeReviewRequestMutationHookResult = ReturnType<typeof useCreateCodeReviewRequestMutation>;
-export type CreateCodeReviewRequestMutationResult = Apollo.MutationResult<CreateCodeReviewRequestMutation>;
-export type CreateCodeReviewRequestMutationOptions = Apollo.BaseMutationOptions<CreateCodeReviewRequestMutation, CreateCodeReviewRequestMutationVariables>;
+export type CreateCodeReviewMutationHookResult = ReturnType<typeof useCreateCodeReviewMutation>;
+export type CreateCodeReviewMutationResult = Apollo.MutationResult<CreateCodeReviewMutation>;
+export type CreateCodeReviewMutationOptions = Apollo.BaseMutationOptions<CreateCodeReviewMutation, CreateCodeReviewMutationVariables>;
+export const CreateOfferDocument = gql`
+    mutation CreateOffer($input: CreateOfferInput!) {
+  createOffer(input: $input) {
+    ok
+  }
+}
+    `;
+export type CreateOfferMutationFn = Apollo.MutationFunction<CreateOfferMutation, CreateOfferMutationVariables>;
+
+/**
+ * __useCreateOfferMutation__
+ *
+ * To run a mutation, you first call `useCreateOfferMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOfferMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOfferMutation, { data, loading, error }] = useCreateOfferMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateOfferMutation(baseOptions?: Apollo.MutationHookOptions<CreateOfferMutation, CreateOfferMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOfferMutation, CreateOfferMutationVariables>(CreateOfferDocument, options);
+      }
+export type CreateOfferMutationHookResult = ReturnType<typeof useCreateOfferMutation>;
+export type CreateOfferMutationResult = Apollo.MutationResult<CreateOfferMutation>;
+export type CreateOfferMutationOptions = Apollo.BaseMutationOptions<CreateOfferMutation, CreateOfferMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   login(input: $input) {
@@ -312,10 +374,10 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
-export const ListCodeReviewRequestsDocument = gql`
-    query ListCodeReviewRequests {
-  listCodeReviewRequests {
-    ...CodeReviewRequestInfo
+export const ListCodeReviewsDocument = gql`
+    query ListCodeReviews {
+  listCodeReviews {
+    ...CodeReviewInfo
     owner {
       id
       email
@@ -323,34 +385,34 @@ export const ListCodeReviewRequestsDocument = gql`
     }
   }
 }
-    ${CodeReviewRequestInfoFragmentDoc}`;
+    ${CodeReviewInfoFragmentDoc}`;
 
 /**
- * __useListCodeReviewRequestsQuery__
+ * __useListCodeReviewsQuery__
  *
- * To run a query within a React component, call `useListCodeReviewRequestsQuery` and pass it any options that fit your needs.
- * When your component renders, `useListCodeReviewRequestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useListCodeReviewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListCodeReviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useListCodeReviewRequestsQuery({
+ * const { data, loading, error } = useListCodeReviewsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useListCodeReviewRequestsQuery(baseOptions?: Apollo.QueryHookOptions<ListCodeReviewRequestsQuery, ListCodeReviewRequestsQueryVariables>) {
+export function useListCodeReviewsQuery(baseOptions?: Apollo.QueryHookOptions<ListCodeReviewsQuery, ListCodeReviewsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListCodeReviewRequestsQuery, ListCodeReviewRequestsQueryVariables>(ListCodeReviewRequestsDocument, options);
+        return Apollo.useQuery<ListCodeReviewsQuery, ListCodeReviewsQueryVariables>(ListCodeReviewsDocument, options);
       }
-export function useListCodeReviewRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListCodeReviewRequestsQuery, ListCodeReviewRequestsQueryVariables>) {
+export function useListCodeReviewsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListCodeReviewsQuery, ListCodeReviewsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListCodeReviewRequestsQuery, ListCodeReviewRequestsQueryVariables>(ListCodeReviewRequestsDocument, options);
+          return Apollo.useLazyQuery<ListCodeReviewsQuery, ListCodeReviewsQueryVariables>(ListCodeReviewsDocument, options);
         }
-export type ListCodeReviewRequestsQueryHookResult = ReturnType<typeof useListCodeReviewRequestsQuery>;
-export type ListCodeReviewRequestsLazyQueryHookResult = ReturnType<typeof useListCodeReviewRequestsLazyQuery>;
-export type ListCodeReviewRequestsQueryResult = Apollo.QueryResult<ListCodeReviewRequestsQuery, ListCodeReviewRequestsQueryVariables>;
+export type ListCodeReviewsQueryHookResult = ReturnType<typeof useListCodeReviewsQuery>;
+export type ListCodeReviewsLazyQueryHookResult = ReturnType<typeof useListCodeReviewsLazyQuery>;
+export type ListCodeReviewsQueryResult = Apollo.QueryResult<ListCodeReviewsQuery, ListCodeReviewsQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

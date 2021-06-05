@@ -1,7 +1,7 @@
-import { CodeReviewRequestResolvers } from "../../../generated/graphql";
+import { CodeReviewResolvers } from "../../../generated/graphql";
 import { User } from "./../../../entity/User";
 
-export const resolvers: CodeReviewRequestResolvers = {
+export const resolvers: CodeReviewResolvers = {
   owner: async ({ ownerId }) => {
     const user = await User.findOne(ownerId);
 
@@ -18,7 +18,7 @@ export const resolvers: CodeReviewRequestResolvers = {
 };
 
 export default {
-  CodeReviewRequest: {
+  CodeReview: {
     ...resolvers,
   },
 };

@@ -7,6 +7,8 @@ import { ApolloServer } from "apollo-server-express";
 import { createDatabaseConn } from "./createDatabaseConn";
 import { createSchema } from "./createSchema";
 import { redis } from "./redis";
+import { applyMiddleware } from "graphql-middleware";
+import { middleware } from "./middleware";
 
 // @TODO: env variable for this
 const SESSION_SECRET = "%$flsdfjsd7fsdf778SDF";
@@ -42,7 +44,7 @@ async function startApolloServer() {
   );
 
   const server = new ApolloServer({
-    schema: createSchema(),
+    schema: applyMiddleware(createSchema(), middleware),
     context: ({ req, res }) => ({
       req,
       res,

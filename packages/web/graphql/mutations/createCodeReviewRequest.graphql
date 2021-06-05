@@ -1,0 +1,11 @@
+mutation CreateCodeReviewRequest($input: CreateCodeReviewRequestInput!) {
+  createCodeReviewRequest(input: $input) {
+    codeReviewRequest {
+      ...CodeReviewRequestInfo
+    }
+    errors {
+      path
+      message
+    }
+  }
+}

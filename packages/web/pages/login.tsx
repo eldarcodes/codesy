@@ -1,7 +1,7 @@
 import { Field, Formik } from "formik";
 import { Button, Form } from "semantic-ui-react";
 import withApollo from "./../lib/withApollo";
-import { InputField } from "./../components/formik-fields/input";
+import { InputField } from "../components/formik-fields/InputField";
 import { useLoginMutation } from "../generated/graphql";
 import { normalizeErrors } from "../utils/normalizeErrors";
 import { useRouter } from "next/dist/client/router";
@@ -27,7 +27,7 @@ const Login: React.FC<LoginProps> = ({}) => {
           setSubmitting(false);
           setErrors(normalizeErrors(response.data?.login.errors));
         } else {
-          router.push("/");
+          router.push("/create-code-review-request");
         }
       }}
     >

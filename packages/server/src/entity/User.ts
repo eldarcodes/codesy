@@ -6,6 +6,7 @@ import {
   OneToMany,
 } from "typeorm";
 import { CodeReviewRequest } from "./CodeReviewRequest";
+import { Offer } from "./Offer";
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,4 +24,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => CodeReviewRequest, (codeRequest) => codeRequest.user)
   codeReviewRequests: CodeReviewRequest[];
+
+  @OneToMany(() => Offer, (offer) => offer.user)
+  offers: Offer[];
 }

@@ -38,6 +38,16 @@ export type CreateCodeReviewRequestResponse = {
   codeReviewRequest?: Maybe<CodeReviewRequest>;
 };
 
+export type CreateOfferInput = {
+  userId: Scalars['String'];
+  codeReviewRequestId: Scalars['String'];
+};
+
+export type CreateOfferResponse = {
+  __typename?: 'CreateOfferResponse';
+  ok: Scalars['Boolean'];
+};
+
 export type Error = {
   __typename?: 'Error';
   path: Scalars['String'];
@@ -58,6 +68,7 @@ export type LoginResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   createCodeReviewRequest: CreateCodeReviewRequestResponse;
+  createOffer: CreateOfferResponse;
   login: LoginResponse;
   register: RegisterResponse;
 };
@@ -65,6 +76,11 @@ export type Mutation = {
 
 export type MutationCreateCodeReviewRequestArgs = {
   input: CreateCodeReviewRequestInput;
+};
+
+
+export type MutationCreateOfferArgs = {
+  input: CreateOfferInput;
 };
 
 
@@ -186,6 +202,9 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   CreateCodeReviewRequestInput: CreateCodeReviewRequestInput;
   CreateCodeReviewRequestResponse: ResolverTypeWrapper<CreateCodeReviewRequestResponse>;
+  CreateOfferInput: CreateOfferInput;
+  CreateOfferResponse: ResolverTypeWrapper<CreateOfferResponse>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Error: ResolverTypeWrapper<Error>;
   LoginInput: LoginInput;
   LoginResponse: ResolverTypeWrapper<LoginResponse>;
@@ -194,7 +213,6 @@ export type ResolversTypes = {
   RegisterInput: RegisterInput;
   RegisterResponse: ResolverTypeWrapper<RegisterResponse>;
   User: ResolverTypeWrapper<User>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -205,6 +223,9 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   CreateCodeReviewRequestInput: CreateCodeReviewRequestInput;
   CreateCodeReviewRequestResponse: CreateCodeReviewRequestResponse;
+  CreateOfferInput: CreateOfferInput;
+  CreateOfferResponse: CreateOfferResponse;
+  Boolean: Scalars['Boolean'];
   Error: Error;
   LoginInput: LoginInput;
   LoginResponse: LoginResponse;
@@ -213,7 +234,6 @@ export type ResolversParentTypes = {
   RegisterInput: RegisterInput;
   RegisterResponse: RegisterResponse;
   User: User;
-  Boolean: Scalars['Boolean'];
 };
 
 export type CodeReviewRequestResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CodeReviewRequest'] = ResolversParentTypes['CodeReviewRequest']> = {
@@ -233,6 +253,11 @@ export type CreateCodeReviewRequestResponseResolvers<ContextType = MyContext, Pa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CreateOfferResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['CreateOfferResponse'] = ResolversParentTypes['CreateOfferResponse']> = {
+  ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ErrorResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Error'] = ResolversParentTypes['Error']> = {
   path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -247,6 +272,7 @@ export type LoginResponseResolvers<ContextType = MyContext, ParentType extends R
 
 export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createCodeReviewRequest?: Resolver<ResolversTypes['CreateCodeReviewRequestResponse'], ParentType, ContextType, RequireFields<MutationCreateCodeReviewRequestArgs, 'input'>>;
+  createOffer?: Resolver<ResolversTypes['CreateOfferResponse'], ParentType, ContextType, RequireFields<MutationCreateOfferArgs, 'input'>>;
   login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   register?: Resolver<ResolversTypes['RegisterResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
 };
@@ -272,6 +298,7 @@ export type UserResolvers<ContextType = MyContext, ParentType extends ResolversP
 export type Resolvers<ContextType = MyContext> = {
   CodeReviewRequest?: CodeReviewRequestResolvers<ContextType>;
   CreateCodeReviewRequestResponse?: CreateCodeReviewRequestResponseResolvers<ContextType>;
+  CreateOfferResponse?: CreateOfferResponseResolvers<ContextType>;
   Error?: ErrorResolvers<ContextType>;
   LoginResponse?: LoginResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;

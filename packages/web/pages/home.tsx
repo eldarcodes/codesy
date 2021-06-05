@@ -1,7 +1,11 @@
 import React from "react";
 import { Card, Grid, Icon, Loader, Segment } from "semantic-ui-react";
 import Layout from "../components/Layout";
-import { useListCodeReviewsQuery } from "../generated/graphql";
+import {
+  ListCodeReviewsDocument,
+  useCreateOfferMutation,
+  useListCodeReviewsQuery,
+} from "../generated/graphql";
 import withApollo from "../lib/withApollo";
 
 interface HomeProps {}
@@ -10,6 +14,9 @@ const MAX_NOTES_CHAR_COUNT = 90;
 
 const Home: React.FC<HomeProps> = ({}) => {
   const { data, loading } = useListCodeReviewsQuery();
+  const [createOffer] = useCreateOfferMutation({
+    refetchQueries: [{ query: ListCodeReviewsDocument }],
+  });
 
   if (loading) {
     return <Loader style={{ margin: "100px auto" }} active inline="centered" />;

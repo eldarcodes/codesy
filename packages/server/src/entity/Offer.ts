@@ -14,7 +14,7 @@ export class Offer extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
+  @Column({ type: "bool", default: false })
   accepted: boolean;
 
   @Column()

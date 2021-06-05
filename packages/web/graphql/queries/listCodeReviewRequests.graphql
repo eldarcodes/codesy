@@ -1,5 +1,10 @@
 query ListCodeReviewRequests {
   listCodeReviewRequests {
     ...CodeReviewRequestInfo
+    owner {
+      id
+      email
+      username
+    }
   }
 }

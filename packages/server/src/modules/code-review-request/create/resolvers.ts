@@ -6,11 +6,11 @@ const resolvers: Resolvers = {
     createCodeReviewRequest: async (_, { input }, { req }) => {
       const { numDays } = input;
 
-      const codeReviewRequest = await CodeReviewRequest.create({
+      const codeReviewRequest = (await CodeReviewRequest.create({
         ...input,
         numDays: numDays || undefined,
-        owner: (req.session as any).userId,
-      }).save();
+        ownerId: req.session.userId,
+      }).save()) as any;
 
       return {
         errors: [],

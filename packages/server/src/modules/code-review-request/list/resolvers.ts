@@ -4,7 +4,7 @@ import { Resolvers } from "../../../generated/graphql";
 const resolvers: Resolvers = {
   Query: {
     listCodeReviewRequests: () => {
-      return CodeReviewRequest.find();
+      return CodeReviewRequest.find() as any;
     },
   },
 };

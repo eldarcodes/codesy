@@ -21,6 +21,8 @@ export type CodeReviewRequest = {
   codeUrl: Scalars['String'];
   techTags: Array<Scalars['String']>;
   notes: Scalars['String'];
+  ownerId: Scalars['String'];
+  owner: User;
 };
 
 export type CreateCodeReviewRequestInput = {
@@ -166,6 +168,10 @@ export type ListCodeReviewRequestsQuery = (
   { __typename?: 'Query' }
   & { listCodeReviewRequests: Array<(
     { __typename?: 'CodeReviewRequest' }
+    & { owner: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email' | 'username'>
+    ) }
     & CodeReviewRequestInfoFragment
   )> }
 );
@@ -310,6 +316,11 @@ export const ListCodeReviewRequestsDocument = gql`
     query ListCodeReviewRequests {
   listCodeReviewRequests {
     ...CodeReviewRequestInfo
+    owner {
+      id
+      email
+      username
+    }
   }
 }
     ${CodeReviewRequestInfoFragmentDoc}`;

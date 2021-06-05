@@ -21,6 +21,8 @@ export type CodeReviewRequest = {
   codeUrl: Scalars['String'];
   techTags: Array<Scalars['String']>;
   notes: Scalars['String'];
+  ownerId: Scalars['String'];
+  owner: User;
 };
 
 export type CreateCodeReviewRequestInput = {
@@ -220,6 +222,8 @@ export type CodeReviewRequestResolvers<ContextType = MyContext, ParentType exten
   codeUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   techTags?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   notes?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ownerId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  owner?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

@@ -7,6 +7,7 @@ import { normalizeErrors } from "../utils/normalizeErrors";
 import { useRouter } from "next/dist/client/router";
 import { TextAreaField } from "../components/formik-fields/TextAreaField";
 import { ListCodeReviewsDocument } from "./../generated/graphql";
+import Link from "next/link";
 
 interface CreateCodeReviewProps {}
 
@@ -65,6 +66,10 @@ const CreateCodeReview: React.FC<CreateCodeReviewProps> = ({}) => {
           <Button type="submit" disabled={isSubmitting} primary>
             Submit
           </Button>
+
+          <Link href="/home">
+            <Button>Go to Home</Button>
+          </Link>
         </Form>
       )}
     </Formik>

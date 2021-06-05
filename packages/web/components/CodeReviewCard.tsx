@@ -1,14 +1,18 @@
 import React from "react";
 import { Card, Grid, Icon } from "semantic-ui-react";
 import { MAX_NOTES_CHAR_COUNT } from "../contstants";
-import { CodeReview } from "../generated/graphql";
+import { CodeReview, MeQuery, User } from "../generated/graphql";
 
 interface CodeReviewCardProps {
   codeReview: CodeReview;
+  onOfferClick: () => void;
+  showOfferButton: boolean;
 }
 
 export const CodeReviewCard: React.FC<CodeReviewCardProps> = ({
   codeReview = {},
+  onOfferClick,
+  showOfferButton,
 }) => {
   return (
     <Grid.Column key={codeReview.id}>
@@ -23,16 +27,14 @@ export const CodeReviewCard: React.FC<CodeReviewCardProps> = ({
             {codeReview.notes!.length > MAX_NOTES_CHAR_COUNT ? "..." : ""}
           </Card.Description>
         </Card.Content>
-        <Card.Content extra>
-          <a
-            href={codeReview.codeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Icon name="user" />
-            Offer Review
-          </a>
-        </Card.Content>
+        {showOfferButton && (
+          <Card.Content extra>
+            <a onClick={onOfferClick}>
+              <Icon name="user" />
+              Offer Review
+            </a>
+          </Card.Content>
+        )}
       </Card>
     </Grid.Column>
   );

@@ -1,22 +1,23 @@
 import React from "react";
-import { Card, Grid, Icon, Loader, Segment } from "semantic-ui-react";
+import { Grid, Loader } from "semantic-ui-react";
+import { CodeReviewCard } from "../components/CodeReviewCard";
 import Layout from "../components/Layout";
 import {
   ListCodeReviewsDocument,
   useCreateOfferMutation,
   useListCodeReviewsQuery,
+  useMeQuery,
 } from "../generated/graphql";
 import withApollo from "../lib/withApollo";
 
 interface HomeProps {}
-
-const MAX_NOTES_CHAR_COUNT = 90;
 
 const Home: React.FC<HomeProps> = ({}) => {
   const { data, loading } = useListCodeReviewsQuery();
   const [createOffer] = useCreateOfferMutation({
     refetchQueries: [{ query: ListCodeReviewsDocument }],
   });
+  // const { data } = useMeQuery();
 
   if (loading) {
     return <Loader style={{ margin: "100px auto" }} active inline="centered" />;
@@ -25,27 +26,8 @@ const Home: React.FC<HomeProps> = ({}) => {
   return (
     <Layout>
       <Grid columns={4} padded>
-        {data?.listCodeReviews.map((crr) => (
-          <Grid.Column key={crr.id}>
-            <Card style={{ height: "100%" }}>
-              <Card.Content>
-                <Card.Header>{crr.owner.username} wants a review</Card.Header>
-                <Card.Meta>
-                  <span className="date">in {crr.numDays} days</span>
-                </Card.Meta>
-                <Card.Description>
-                  {crr.notes.slice(0, MAX_NOTES_CHAR_COUNT)}
-                  {crr.notes.length > MAX_NOTES_CHAR_COUNT ? "..." : ""}
-                </Card.Description>
-              </Card.Content>
-              <Card.Content extra>
-                <a href={crr.codeUrl} target="_blank" rel="noopener noreferrer">
-                  <Icon name="user" />
-                  Offer Review
-                </a>
-              </Card.Content>
-            </Card>
-          </Grid.Column>
+        {data?.listCodeReviews.map((codeReview) => (
+          <CodeReviewCard key={codeReview.id} codeReview={codeReview} />
         ))}
       </Grid>
     </Layout>

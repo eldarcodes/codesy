@@ -1,0 +1,11 @@
+mutation CreateCodeReview($input: CreateCodeReviewInput!) {
+  createCodeReview(input: $input) {
+    codeReview {
+      ...CodeReviewInfo
+    }
+    errors {
+      path
+      message
+    }
+  }
+}

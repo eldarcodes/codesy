@@ -1,13 +1,13 @@
 import React from "react";
 import { Card, Grid, Icon, Loader, Segment } from "semantic-ui-react";
 import Layout from "../components/Layout";
-import { useListCodeReviewRequestsQuery } from "../generated/graphql";
+import { useListCodeReviewsQuery } from "../generated/graphql";
 import withApollo from "../lib/withApollo";
 
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = ({}) => {
-  const { data, loading } = useListCodeReviewRequestsQuery();
+  const { data, loading } = useListCodeReviewsQuery();
 
   if (loading) {
     return <Loader style={{ margin: "100px auto" }} active inline="centered" />;
@@ -16,7 +16,7 @@ const Home: React.FC<HomeProps> = ({}) => {
   return (
     <Layout>
       <Grid columns={1} padded>
-        {data?.listCodeReviewRequests.map((crr) => (
+        {data?.listCodeReviews.map((crr) => (
           <Grid.Column key={crr.id}>
             {/* <Segment>
               <div>{crr.notes.slice(0, 150)}</div>

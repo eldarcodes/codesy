@@ -1,12 +1,12 @@
-import { CodeReviewRequest } from "../../../entity/CodeReviewRequest";
+import { CodeReview } from "../../../entity/CodeReview";
 import { Resolvers } from "../../../generated/graphql";
 
 const resolvers: Resolvers = {
   Mutation: {
-    createCodeReviewRequest: async (_, { input }, { req }) => {
+    createCodeReview: async (_, { input }, { req }) => {
       const { numDays } = input;
 
-      const codeReviewRequest = (await CodeReviewRequest.create({
+      const codeReview = (await CodeReview.create({
         ...input,
         numDays: numDays || undefined,
         ownerId: req.session.userId,
@@ -14,7 +14,7 @@ const resolvers: Resolvers = {
 
       return {
         errors: [],
-        codeReviewRequest,
+        codeReview,
       };
     },
   },

@@ -8,6 +8,7 @@ import { useRouter } from "next/dist/client/router";
 import { TextAreaField } from "../components/formik-fields/TextAreaField";
 import { ListCodeReviewsDocument } from "./../generated/graphql";
 import Link from "next/link";
+import Layout from "../components/Layout";
 
 interface CreateCodeReviewProps {}
 
@@ -25,55 +26,57 @@ const CreateCodeReview: React.FC<CreateCodeReviewProps> = ({}) => {
   });
 
   return (
-    <Formik<FormValues>
-      initialValues={
-        { numDays: 3, codeUrl: "", techTags: [], notes: "" } as FormValues
-      }
-      onSubmit={async (input, { setErrors, setSubmitting }) => {
-        const response = await createCodeReview({
-          variables: { input },
-        });
-
-        if (response.data?.createCodeReview.errors?.length) {
-          setSubmitting(false);
-          setErrors(normalizeErrors(response.data?.createCodeReview.errors));
-        } else {
-          router.push("/home");
+    <Layout title="Create code review request" showMenu>
+      <Formik<FormValues>
+        initialValues={
+          { numDays: 3, codeUrl: "", techTags: [], notes: "" } as FormValues
         }
-      }}
-    >
-      {({ handleSubmit, isSubmitting }) => (
-        <Form onSubmit={handleSubmit}>
-          <Field
-            label="Number of days"
-            placeholder="Number of days"
-            name="numDays"
-            type="number"
-            component={InputField}
-          />
-          <Field
-            label="GitHub URL"
-            placeholder="GitHub URL"
-            name="codeUrl"
-            component={InputField}
-          />
-          <Field
-            label="Notes"
-            placeholder="Notes"
-            name="notes"
-            component={TextAreaField}
-          />
+        onSubmit={async (input, { setErrors, setSubmitting }) => {
+          const response = await createCodeReview({
+            variables: { input },
+          });
 
-          <Button type="submit" disabled={isSubmitting} primary>
-            Submit
-          </Button>
+          if (response.data?.createCodeReview.errors?.length) {
+            setSubmitting(false);
+            setErrors(normalizeErrors(response.data?.createCodeReview.errors));
+          } else {
+            router.push("/home");
+          }
+        }}
+      >
+        {({ handleSubmit, isSubmitting }) => (
+          <Form onSubmit={handleSubmit}>
+            <Field
+              label="Number of days"
+              placeholder="Number of days"
+              name="numDays"
+              type="number"
+              component={InputField}
+            />
+            <Field
+              label="GitHub URL"
+              placeholder="GitHub URL"
+              name="codeUrl"
+              component={InputField}
+            />
+            <Field
+              label="Notes"
+              placeholder="Notes"
+              name="notes"
+              component={TextAreaField}
+            />
 
-          <Link href="/home">
-            <Button>Go to Home</Button>
-          </Link>
-        </Form>
-      )}
-    </Formik>
+            <Button type="submit" disabled={isSubmitting} primary>
+              Submit
+            </Button>
+
+            <Link href="/home">
+              <Button>Go to Home</Button>
+            </Link>
+          </Form>
+        )}
+      </Formik>
+    </Layout>
   );
 };
 

@@ -1,9 +1,21 @@
 import React, { ReactNode } from "react";
-import { Button, Container, Loader, Menu } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Icon,
+  Label,
+  Loader,
+  Menu,
+} from "semantic-ui-react";
 import Head from "next/head";
 import Link from "next/link";
 import { PAGE_TITLE_SUFFIX, PAGE_TITLE_DEFAULT } from "../constants";
-import { useMeQuery } from "../generated/graphql";
+import {
+  MeDocument,
+  useLogoutMutation,
+  useMeQuery,
+} from "../generated/graphql";
+import { useRouter } from "next/router";
 
 type TLayoutProps = {
   children?: ReactNode;
@@ -13,6 +25,19 @@ type TLayoutProps = {
 
 const Layout: React.FC<TLayoutProps> = ({ children, title, showMenu }) => {
   const { data, loading } = useMeQuery();
+  const [logout] = useLogoutMutation({
+    update: (store) => {
+      store.writeQuery({
+        query: MeDocument,
+        data: {
+          me: null,
+        },
+      });
+    },
+  });
+
+  const router = useRouter();
+
   const titleWithSuffix = title
     ? title + PAGE_TITLE_SUFFIX
     : PAGE_TITLE_DEFAULT;
@@ -39,18 +64,37 @@ const Layout: React.FC<TLayoutProps> = ({ children, title, showMenu }) => {
             </Link>
           )}
           {isLoggedIn ? (
-            <Menu.Item position="right">{data?.me?.username}</Menu.Item>
+            <Menu.Item position="right">
+              <Button as="div" labelPosition="right">
+                <Button color="green">
+                  <Icon name="user" />
+                  {data?.me?.username}
+                </Button>
+                <Label
+                  onClick={async () => {
+                    await logout();
+                    // router.push('/login')
+                  }}
+                  as="a"
+                  basic
+                  pointing="left"
+                >
+                  Logout
+                </Label>
+              </Button>
+            </Menu.Item>
           ) : (
-            <>
-              <Menu.Item position="right">
+            <Menu.Item position="right">
+              <Button.Group>
                 <Link href="/login">
-                  <Button style={{ marginRight: 5 }}>Sign in</Button>
+                  <Button>Sign in</Button>
                 </Link>
+                <Button.Or />
                 <Link href="/register">
-                  <Button primary>Sign up</Button>
+                  <Button positive>Sign up</Button>
                 </Link>
-              </Menu.Item>
-            </>
+              </Button.Group>
+            </Menu.Item>
           )}
         </Menu>
       ) : null}

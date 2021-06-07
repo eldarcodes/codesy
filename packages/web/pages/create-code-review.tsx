@@ -48,6 +48,7 @@ const CreateCodeReview: React.FC<CreateCodeReviewProps> = ({}) => {
             label="Number of days"
             placeholder="Number of days"
             name="numDays"
+            type="number"
             component={InputField}
           />
           <Field

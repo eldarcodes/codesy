@@ -70,6 +70,7 @@ export type Mutation = {
   createCodeReview: CreateCodeReviewResponse;
   createOffer: CreateOfferResponse;
   login: LoginResponse;
+  logout: Scalars['Boolean'];
   register: RegisterResponse;
 };
 
@@ -274,6 +275,7 @@ export type MutationResolvers<ContextType = MyContext, ParentType extends Resolv
   createCodeReview?: Resolver<ResolversTypes['CreateCodeReviewResponse'], ParentType, ContextType, RequireFields<MutationCreateCodeReviewArgs, 'input'>>;
   createOffer?: Resolver<ResolversTypes['CreateOfferResponse'], ParentType, ContextType, RequireFields<MutationCreateOfferArgs, 'input'>>;
   login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
+  logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   register?: Resolver<ResolversTypes['RegisterResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
 };
 

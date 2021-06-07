@@ -47,7 +47,7 @@ const Home: React.FC<HomeProps> = ({}) => {
   }
 
   return (
-    <Layout>
+    <Layout title="Home">
       <Grid columns={4} padded>
         {listData?.listCodeReviews.map((codeReview) => (
           <CodeReviewCard

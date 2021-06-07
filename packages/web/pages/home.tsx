@@ -1,51 +1,76 @@
+import { useRouter } from "next/dist/client/router";
 import React from "react";
-import { Card, Grid, Icon, Loader, Segment } from "semantic-ui-react";
+import { Grid, Loader, Message } from "semantic-ui-react";
+import { CodeReviewCard } from "../components/CodeReviewCard";
 import Layout from "../components/Layout";
 import {
   ListCodeReviewsDocument,
   useCreateOfferMutation,
   useListCodeReviewsQuery,
+  useMeQuery,
 } from "../generated/graphql";
 import withApollo from "../lib/withApollo";
 
 interface HomeProps {}
 
-const MAX_NOTES_CHAR_COUNT = 90;
-
 const Home: React.FC<HomeProps> = ({}) => {
-  const { data, loading } = useListCodeReviewsQuery();
+  const {
+    data: listData,
+    loading: listLoading,
+    error: listError,
+  } = useListCodeReviewsQuery();
   const [createOffer] = useCreateOfferMutation({
     refetchQueries: [{ query: ListCodeReviewsDocument }],
   });
+  const { data: meData, loading: meLoading, error: meError } = useMeQuery();
 
-  if (loading) {
+  const router = useRouter();
+
+  if (listLoading || meLoading) {
     return <Loader style={{ margin: "100px auto" }} active inline="centered" />;
+  }
+
+  if (meError) {
+    return (
+      <Message warning>
+        <p>Login error</p>
+      </Message>
+    );
+  }
+
+  if (listError) {
+    return (
+      <Message warning>
+        <p>Error while loading Code Review list</p>
+      </Message>
+    );
   }
 
   return (
     <Layout>
       <Grid columns={4} padded>
-        {data?.listCodeReviews.map((crr) => (
-          <Grid.Column key={crr.id}>
-            <Card style={{ height: "100%" }}>
-              <Card.Content>
-                <Card.Header>{crr.owner.username} wants a review</Card.Header>
-                <Card.Meta>
-                  <span className="date">in {crr.numDays} days</span>
-                </Card.Meta>
-                <Card.Description>
-                  {crr.notes.slice(0, MAX_NOTES_CHAR_COUNT)}
-                  {crr.notes.length > MAX_NOTES_CHAR_COUNT ? "..." : ""}
-                </Card.Description>
-              </Card.Content>
-              <Card.Content extra>
-                <a href={crr.codeUrl} target="_blank" rel="noopener noreferrer">
-                  <Icon name="user" />
-                  Offer Review
-                </a>
-              </Card.Content>
-            </Card>
-          </Grid.Column>
+        {listData?.listCodeReviews.map((codeReview) => (
+          <CodeReviewCard
+            showOfferButton={
+              !!meData?.me?.id && codeReview.ownerId !== meData?.me?.id
+            }
+            onOfferClick={() => {
+              if (meData?.me) {
+                createOffer({
+                  variables: {
+                    input: {
+                      userId: meData.me.id,
+                      codeReviewId: codeReview.id,
+                    },
+                  },
+                });
+              } else {
+                router.push("/login");
+              }
+            }}
+            key={codeReview.id}
+            codeReview={codeReview}
+          />
         ))}
       </Grid>
     </Layout>

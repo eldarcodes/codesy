@@ -37,7 +37,7 @@ const resolvers: Resolvers = {
         return invalidLoginResponse;
       }
 
-      (req.session as any).userId = user.id;
+      req.session.userId = user.id;
 
       return {
         errors: [],

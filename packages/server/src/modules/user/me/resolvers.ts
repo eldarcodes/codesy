@@ -4,7 +4,7 @@ import { Resolvers } from "../../../generated/graphql";
 const resolvers: Resolvers = {
   Query: {
     me: async (_, __, { req }) => {
-      const userId = (req.session as any).userId;
+      const userId = req.session.userId;
 
       if (!userId) {
         return null;

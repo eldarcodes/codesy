@@ -197,6 +197,7 @@ export type ListCodeReviewsQuery = (
   { __typename?: 'Query' }
   & { listCodeReviews: Array<(
     { __typename?: 'CodeReview' }
+    & Pick<CodeReview, 'ownerId'>
     & { owner: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'email' | 'username'>
@@ -378,6 +379,7 @@ export const ListCodeReviewsDocument = gql`
     query ListCodeReviews {
   listCodeReviews {
     ...CodeReviewInfo
+    ownerId
     owner {
       id
       email

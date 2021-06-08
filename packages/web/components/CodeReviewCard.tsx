@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Grid, Icon } from "semantic-ui-react";
 import { MAX_NOTES_CHAR_COUNT } from "../constants";
-import { CodeReview, MeQuery, User } from "../generated/graphql";
+import { CodeReview } from "../generated/graphql";
 
 interface CodeReviewCardProps {
   codeReview: CodeReview;

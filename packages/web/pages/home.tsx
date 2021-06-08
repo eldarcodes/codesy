@@ -1,5 +1,5 @@
+import React, { useState } from "react";
 import { useRouter } from "next/dist/client/router";
-import React from "react";
 import { Grid, Loader, Message } from "semantic-ui-react";
 import { CodeReviewCard } from "../components/CodeReviewCard";
 import Layout from "../components/Layout";
@@ -14,6 +14,8 @@ import withApollo from "../lib/withApollo";
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = ({}) => {
+  const [offerSentTo, setOfferSentTo] = useState<string>("");
+
   const {
     data: listData,
     loading: listLoading,
@@ -48,13 +50,19 @@ const Home: React.FC<HomeProps> = ({}) => {
 
   return (
     <Layout showMenu title="Home">
+      {offerSentTo && (
+        <Message positive>
+          <Message.Header>Success</Message.Header>
+          <p>Your offer has been sent to {offerSentTo}</p>
+        </Message>
+      )}
       <Grid columns={3} padded>
         {listData?.listCodeReviews.map((codeReview) => (
           <CodeReviewCard
             showOfferButton={
               !!meData?.me?.id && codeReview.ownerId !== meData?.me?.id
             }
-            onOfferClick={() => {
+            onOfferClick={async () => {
               if (meData?.me) {
                 createOffer({
                   variables: {
@@ -64,6 +72,7 @@ const Home: React.FC<HomeProps> = ({}) => {
                     },
                   },
                 });
+                setOfferSentTo(meData.me.username);
               } else {
                 router.push("/login");
               }

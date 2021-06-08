@@ -21,4 +21,7 @@ export const middleware: IMiddlewareTypeMap = {
   Mutation: {
     createCodeReview: standartMiddleWare,
   },
+  Query: {
+    receivedOffers: standartMiddleWare,
+  },
 };

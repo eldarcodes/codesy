@@ -21,7 +21,7 @@ const Login: React.FC<LoginProps> = ({}) => {
   });
 
   return (
-    <Layout title="Sign in">
+    <Layout title="Login">
       <Formik<FormValues>
         initialValues={{ usernameOrEmail: "", password: "" } as FormValues}
         onSubmit={async (input, { setErrors, setSubmitting }) => {

@@ -73,7 +73,7 @@ const Layout: React.FC<TLayoutProps> = ({ children, title, showMenu }) => {
                 <Label
                   onClick={async () => {
                     await logout();
-                    // router.push('/login')
+                    router.push("/home");
                   }}
                   as="a"
                   basic
@@ -87,11 +87,11 @@ const Layout: React.FC<TLayoutProps> = ({ children, title, showMenu }) => {
             <Menu.Item position="right">
               <Button.Group>
                 <Link href="/login">
-                  <Button>Sign in</Button>
+                  <Button>Login</Button>
                 </Link>
                 <Button.Or />
                 <Link href="/register">
-                  <Button positive>Sign up</Button>
+                  <Button positive>Register</Button>
                 </Link>
               </Button.Group>
             </Menu.Item>

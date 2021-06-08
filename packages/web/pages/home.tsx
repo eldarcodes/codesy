@@ -48,7 +48,7 @@ const Home: React.FC<HomeProps> = ({}) => {
 
   return (
     <Layout showMenu title="Home">
-      <Grid columns={4} padded>
+      <Grid columns={3} padded>
         {listData?.listCodeReviews.map((codeReview) => (
           <CodeReviewCard
             showOfferButton={

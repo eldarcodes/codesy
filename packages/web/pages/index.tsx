@@ -1,6 +1,5 @@
-import Link from "next/link";
-import { Button } from "semantic-ui-react";
 import Layout from "../components/Layout";
+import withApollo from "../lib/withApollo";
 
 const IndexPage = () => (
   <Layout showMenu>
@@ -8,4 +7,4 @@ const IndexPage = () => (
   </Layout>
 );
 
-export default IndexPage;
+export default withApollo({ ssr: true })(IndexPage);

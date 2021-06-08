@@ -134,6 +134,16 @@ export type CodeReviewInfoFragment = (
   & Pick<CodeReview, 'id' | 'numDays' | 'codeUrl' | 'techTags' | 'notes'>
 );
 
+export type ErrorInfoFragment = (
+  { __typename?: 'Error' }
+  & Pick<Error, 'path' | 'message'>
+);
+
+export type UserInfoFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username' | 'email'>
+);
+
 export type CreateCodeReviewMutationVariables = Exact<{
   input: CreateCodeReviewInput;
 }>;
@@ -148,7 +158,7 @@ export type CreateCodeReviewMutation = (
       & CodeReviewInfoFragment
     )>, errors?: Maybe<Array<(
       { __typename?: 'Error' }
-      & Pick<Error, 'path' | 'message'>
+      & ErrorInfoFragment
     )>> }
   ) }
 );
@@ -177,10 +187,10 @@ export type LoginMutation = (
     { __typename?: 'LoginResponse' }
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username' | 'email' | 'id'>
+      & UserInfoFragment
     )>, errors?: Maybe<Array<(
       { __typename?: 'Error' }
-      & Pick<Error, 'path' | 'message'>
+      & ErrorInfoFragment
     )>> }
   ) }
 );
@@ -204,7 +214,7 @@ export type RegisterMutation = (
     { __typename?: 'RegisterResponse' }
     & { errors?: Maybe<Array<(
       { __typename?: 'Error' }
-      & Pick<Error, 'path' | 'message'>
+      & ErrorInfoFragment
     )>> }
   ) }
 );
@@ -219,7 +229,7 @@ export type ListCodeReviewsQuery = (
     & Pick<CodeReview, 'ownerId'>
     & { owner: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'email' | 'username'>
+      & UserInfoFragment
     ) }
     & CodeReviewInfoFragment
   )> }
@@ -232,7 +242,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email'>
+    & UserInfoFragment
   )> }
 );
 
@@ -249,7 +259,7 @@ export type ReceivedOffersQuery = (
       & CodeReviewInfoFragment
     ), sender: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username' | 'email'>
+      & UserInfoFragment
     ) }
   )> }
 );
@@ -263,6 +273,19 @@ export const CodeReviewInfoFragmentDoc = gql`
   notes
 }
     `;
+export const ErrorInfoFragmentDoc = gql`
+    fragment ErrorInfo on Error {
+  path
+  message
+}
+    `;
+export const UserInfoFragmentDoc = gql`
+    fragment UserInfo on User {
+  id
+  username
+  email
+}
+    `;
 export const CreateCodeReviewDocument = gql`
     mutation CreateCodeReview($input: CreateCodeReviewInput!) {
   createCodeReview(input: $input) {
@@ -270,12 +293,12 @@ export const CreateCodeReviewDocument = gql`
       ...CodeReviewInfo
     }
     errors {
-      path
-      message
+      ...ErrorInfo
     }
   }
 }
-    ${CodeReviewInfoFragmentDoc}`;
+    ${CodeReviewInfoFragmentDoc}
+${ErrorInfoFragmentDoc}`;
 export type CreateCodeReviewMutationFn = Apollo.MutationFunction<CreateCodeReviewMutation, CreateCodeReviewMutationVariables>;
 
 /**
@@ -339,17 +362,15 @@ export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   login(input: $input) {
     user {
-      username
-      email
-      id
+      ...UserInfo
     }
     errors {
-      path
-      message
+      ...ErrorInfo
     }
   }
 }
-    `;
+    ${UserInfoFragmentDoc}
+${ErrorInfoFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -410,12 +431,11 @@ export const RegisterDocument = gql`
     mutation Register($input: RegisterInput!) {
   register(input: $input) {
     errors {
-      path
-      message
+      ...ErrorInfo
     }
   }
 }
-    `;
+    ${ErrorInfoFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -448,13 +468,12 @@ export const ListCodeReviewsDocument = gql`
     ...CodeReviewInfo
     ownerId
     owner {
-      id
-      email
-      username
+      ...UserInfo
     }
   }
 }
-    ${CodeReviewInfoFragmentDoc}`;
+    ${CodeReviewInfoFragmentDoc}
+${UserInfoFragmentDoc}`;
 
 /**
  * __useListCodeReviewsQuery__
@@ -485,12 +504,10 @@ export type ListCodeReviewsQueryResult = Apollo.QueryResult<ListCodeReviewsQuery
 export const MeDocument = gql`
     query Me {
   me {
-    id
-    username
-    email
+    ...UserInfo
   }
 }
-    `;
+    ${UserInfoFragmentDoc}`;
 
 /**
  * __useMeQuery__
@@ -525,16 +542,15 @@ export const ReceivedOffersDocument = gql`
       ...CodeReviewInfo
     }
     sender {
-      id
-      username
-      email
+      ...UserInfo
     }
     userId
     accepted
     codeReviewId
   }
 }
-    ${CodeReviewInfoFragmentDoc}`;
+    ${CodeReviewInfoFragmentDoc}
+${UserInfoFragmentDoc}`;
 
 /**
  * __useReceivedOffersQuery__

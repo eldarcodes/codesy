@@ -4,8 +4,7 @@ mutation CreateCodeReview($input: CreateCodeReviewInput!) {
       ...CodeReviewInfo
     }
     errors {
-      path
-      message
+      ...ErrorInfo
     }
   }
 }

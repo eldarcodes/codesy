@@ -4,9 +4,7 @@ query ReceivedOffers {
       ...CodeReviewInfo
     }
     sender {
-      id
-      username
-      email
+      ...UserInfo
     }
     userId
     accepted

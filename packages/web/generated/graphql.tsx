@@ -94,9 +94,19 @@ export type MutationRegisterArgs = {
   input: RegisterInput;
 };
 
+export type Offer = {
+  __typename?: 'Offer';
+  codeReviewId: Scalars['String'];
+  userId: Scalars['String'];
+  codeReview: CodeReview;
+  sender: User;
+  accepted: Scalars['Boolean'];
+};
+
 export type Query = {
   __typename?: 'Query';
   listCodeReviews: Array<CodeReview>;
+  receivedOffers: Array<Offer>;
   me?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
 };
@@ -223,6 +233,24 @@ export type MeQuery = (
   & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username' | 'email'>
+  )> }
+);
+
+export type ReceivedOffersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ReceivedOffersQuery = (
+  { __typename?: 'Query' }
+  & { receivedOffers: Array<(
+    { __typename?: 'Offer' }
+    & Pick<Offer, 'userId' | 'accepted' | 'codeReviewId'>
+    & { codeReview: (
+      { __typename?: 'CodeReview' }
+      & CodeReviewInfoFragment
+    ), sender: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'email'>
+    ) }
   )> }
 );
 
@@ -490,3 +518,47 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const ReceivedOffersDocument = gql`
+    query ReceivedOffers {
+  receivedOffers {
+    codeReview {
+      ...CodeReviewInfo
+    }
+    sender {
+      id
+      username
+      email
+    }
+    userId
+    accepted
+    codeReviewId
+  }
+}
+    ${CodeReviewInfoFragmentDoc}`;
+
+/**
+ * __useReceivedOffersQuery__
+ *
+ * To run a query within a React component, call `useReceivedOffersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReceivedOffersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReceivedOffersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useReceivedOffersQuery(baseOptions?: Apollo.QueryHookOptions<ReceivedOffersQuery, ReceivedOffersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ReceivedOffersQuery, ReceivedOffersQueryVariables>(ReceivedOffersDocument, options);
+      }
+export function useReceivedOffersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ReceivedOffersQuery, ReceivedOffersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ReceivedOffersQuery, ReceivedOffersQueryVariables>(ReceivedOffersDocument, options);
+        }
+export type ReceivedOffersQueryHookResult = ReturnType<typeof useReceivedOffersQuery>;
+export type ReceivedOffersLazyQueryHookResult = ReturnType<typeof useReceivedOffersLazyQuery>;
+export type ReceivedOffersQueryResult = Apollo.QueryResult<ReceivedOffersQuery, ReceivedOffersQueryVariables>;

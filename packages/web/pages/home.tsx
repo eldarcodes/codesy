@@ -72,7 +72,7 @@ const Home: React.FC<HomeProps> = ({}) => {
                     },
                   },
                 });
-                setOfferSentTo(meData.me.username);
+                setOfferSentTo(codeReview.owner.username);
               } else {
                 router.push("/login");
               }

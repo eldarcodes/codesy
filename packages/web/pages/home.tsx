@@ -64,7 +64,7 @@ const Home: React.FC<HomeProps> = ({}) => {
             }
             onOfferClick={async () => {
               if (meData?.me) {
-                createOffer({
+                await createOffer({
                   variables: {
                     input: {
                       userId: meData.me.id,

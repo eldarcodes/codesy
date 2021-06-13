@@ -8,7 +8,7 @@ interface ViewOffersProps {}
 
 const ViewOffers: React.FC<ViewOffersProps> = ({}) => {
   const { data, loading } = useReceivedOffersQuery();
-  console.log(data);
+
   return (
     <Layout showMenu title="Offers">
       <Card.Group itemsPerRow={4}>

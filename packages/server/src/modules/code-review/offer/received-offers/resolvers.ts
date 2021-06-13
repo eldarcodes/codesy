@@ -4,7 +4,6 @@ import { Resolvers } from "../../../../generated/graphql";
 const resolvers: Resolvers = {
   Query: {
     receivedOffers: (_, __, { req }) => {
-      console.log(req.session.userId);
       return getConnection().query(
         `
         select * from code_review cr

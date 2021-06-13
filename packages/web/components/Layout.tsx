@@ -27,12 +27,7 @@ const Layout: React.FC<TLayoutProps> = ({ children, title, showMenu }) => {
   const { data, loading } = useMeQuery();
   const [logout] = useLogoutMutation({
     update: (store) => {
-      store.writeQuery({
-        query: MeDocument,
-        data: {
-          me: null,
-        },
-      });
+      store.reset();
     },
   });
 

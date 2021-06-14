@@ -1,0 +1,12 @@
+input AcceptOfferInput {
+  userId: String!
+  codeReviewId: String!
+}
+
+type AcceptOfferResponse {
+  offer: Offer
+}
+
+type Mutation {
+  acceptOffer(input: AcceptOfferInput!): AcceptOfferResponse!
+}

@@ -7,7 +7,7 @@ query ReceivedOffers {
       ...UserInfo
     }
     userId
-    accepted
+    status
     codeReviewId
   }
 }

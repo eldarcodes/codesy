@@ -94,9 +94,18 @@ export type MutationRegisterArgs = {
   input: RegisterInput;
 };
 
+export type Offer = {
+  __typename?: 'Offer';
+  codeReviewId: Scalars['String'];
+  userId: Scalars['String'];
+  codeReview: CodeReview;
+  sender: User;
+};
+
 export type Query = {
   __typename?: 'Query';
   listCodeReviews: Array<CodeReview>;
+  receivedOffers: Array<Offer>;
   me?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
 };
@@ -210,6 +219,7 @@ export type ResolversTypes = {
   LoginInput: LoginInput;
   LoginResponse: ResolverTypeWrapper<LoginResponse>;
   Mutation: ResolverTypeWrapper<{}>;
+  Offer: ResolverTypeWrapper<Offer>;
   Query: ResolverTypeWrapper<{}>;
   RegisterInput: RegisterInput;
   RegisterResponse: ResolverTypeWrapper<RegisterResponse>;
@@ -231,6 +241,7 @@ export type ResolversParentTypes = {
   LoginInput: LoginInput;
   LoginResponse: LoginResponse;
   Mutation: {};
+  Offer: Offer;
   Query: {};
   RegisterInput: RegisterInput;
   RegisterResponse: RegisterResponse;
@@ -279,8 +290,17 @@ export type MutationResolvers<ContextType = MyContext, ParentType extends Resolv
   register?: Resolver<ResolversTypes['RegisterResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
 };
 
+export type OfferResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Offer'] = ResolversParentTypes['Offer']> = {
+  codeReviewId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  codeReview?: Resolver<ResolversTypes['CodeReview'], ParentType, ContextType>;
+  sender?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   listCodeReviews?: Resolver<Array<ResolversTypes['CodeReview']>, ParentType, ContextType>;
+  receivedOffers?: Resolver<Array<ResolversTypes['Offer']>, ParentType, ContextType>;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 };
@@ -304,6 +324,7 @@ export type Resolvers<ContextType = MyContext> = {
   Error?: ErrorResolvers<ContextType>;
   LoginResponse?: LoginResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  Offer?: OfferResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RegisterResponse?: RegisterResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;

@@ -1,0 +1,13 @@
+query ReceivedOffers {
+  receivedOffers {
+    codeReview {
+      ...CodeReviewInfo
+    }
+    sender {
+      ...UserInfo
+    }
+    userId
+    accepted
+    codeReviewId
+  }
+}

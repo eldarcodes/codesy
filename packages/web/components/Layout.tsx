@@ -27,12 +27,7 @@ const Layout: React.FC<TLayoutProps> = ({ children, title, showMenu }) => {
   const { data, loading } = useMeQuery();
   const [logout] = useLogoutMutation({
     update: (store) => {
-      store.writeQuery({
-        query: MeDocument,
-        data: {
-          me: null,
-        },
-      });
+      store.reset();
     },
   });
 
@@ -59,9 +54,14 @@ const Layout: React.FC<TLayoutProps> = ({ children, title, showMenu }) => {
             <Menu.Item>Home</Menu.Item>
           </Link>
           {isLoggedIn && (
-            <Link href="/create-code-review">
-              <Menu.Item>Request a code review</Menu.Item>
-            </Link>
+            <>
+              <Link href="/create-code-review">
+                <Menu.Item>Request a code review</Menu.Item>
+              </Link>
+              <Link href="/view-offers">
+                <Menu.Item>Offers</Menu.Item>
+              </Link>
+            </>
           )}
           {isLoggedIn ? (
             <Menu.Item position="right">

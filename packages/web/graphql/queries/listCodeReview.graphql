@@ -3,9 +3,7 @@ query ListCodeReviews {
     ...CodeReviewInfo
     ownerId
     owner {
-      id
-      email
-      username
+      ...UserInfo
     }
   }
 }

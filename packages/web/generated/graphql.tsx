@@ -94,9 +94,19 @@ export type MutationRegisterArgs = {
   input: RegisterInput;
 };
 
+export type Offer = {
+  __typename?: 'Offer';
+  codeReviewId: Scalars['String'];
+  userId: Scalars['String'];
+  codeReview: CodeReview;
+  sender: User;
+  accepted: Scalars['Boolean'];
+};
+
 export type Query = {
   __typename?: 'Query';
   listCodeReviews: Array<CodeReview>;
+  receivedOffers: Array<Offer>;
   me?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
 };
@@ -124,6 +134,16 @@ export type CodeReviewInfoFragment = (
   & Pick<CodeReview, 'id' | 'numDays' | 'codeUrl' | 'techTags' | 'notes'>
 );
 
+export type ErrorInfoFragment = (
+  { __typename?: 'Error' }
+  & Pick<Error, 'path' | 'message'>
+);
+
+export type UserInfoFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username' | 'email'>
+);
+
 export type CreateCodeReviewMutationVariables = Exact<{
   input: CreateCodeReviewInput;
 }>;
@@ -138,7 +158,7 @@ export type CreateCodeReviewMutation = (
       & CodeReviewInfoFragment
     )>, errors?: Maybe<Array<(
       { __typename?: 'Error' }
-      & Pick<Error, 'path' | 'message'>
+      & ErrorInfoFragment
     )>> }
   ) }
 );
@@ -167,10 +187,10 @@ export type LoginMutation = (
     { __typename?: 'LoginResponse' }
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username' | 'email' | 'id'>
+      & UserInfoFragment
     )>, errors?: Maybe<Array<(
       { __typename?: 'Error' }
-      & Pick<Error, 'path' | 'message'>
+      & ErrorInfoFragment
     )>> }
   ) }
 );
@@ -194,7 +214,7 @@ export type RegisterMutation = (
     { __typename?: 'RegisterResponse' }
     & { errors?: Maybe<Array<(
       { __typename?: 'Error' }
-      & Pick<Error, 'path' | 'message'>
+      & ErrorInfoFragment
     )>> }
   ) }
 );
@@ -209,7 +229,7 @@ export type ListCodeReviewsQuery = (
     & Pick<CodeReview, 'ownerId'>
     & { owner: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'email' | 'username'>
+      & UserInfoFragment
     ) }
     & CodeReviewInfoFragment
   )> }
@@ -222,7 +242,25 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email'>
+    & UserInfoFragment
+  )> }
+);
+
+export type ReceivedOffersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ReceivedOffersQuery = (
+  { __typename?: 'Query' }
+  & { receivedOffers: Array<(
+    { __typename?: 'Offer' }
+    & Pick<Offer, 'userId' | 'accepted' | 'codeReviewId'>
+    & { codeReview: (
+      { __typename?: 'CodeReview' }
+      & CodeReviewInfoFragment
+    ), sender: (
+      { __typename?: 'User' }
+      & UserInfoFragment
+    ) }
   )> }
 );
 
@@ -235,6 +273,19 @@ export const CodeReviewInfoFragmentDoc = gql`
   notes
 }
     `;
+export const ErrorInfoFragmentDoc = gql`
+    fragment ErrorInfo on Error {
+  path
+  message
+}
+    `;
+export const UserInfoFragmentDoc = gql`
+    fragment UserInfo on User {
+  id
+  username
+  email
+}
+    `;
 export const CreateCodeReviewDocument = gql`
     mutation CreateCodeReview($input: CreateCodeReviewInput!) {
   createCodeReview(input: $input) {
@@ -242,12 +293,12 @@ export const CreateCodeReviewDocument = gql`
       ...CodeReviewInfo
     }
     errors {
-      path
-      message
+      ...ErrorInfo
     }
   }
 }
-    ${CodeReviewInfoFragmentDoc}`;
+    ${CodeReviewInfoFragmentDoc}
+${ErrorInfoFragmentDoc}`;
 export type CreateCodeReviewMutationFn = Apollo.MutationFunction<CreateCodeReviewMutation, CreateCodeReviewMutationVariables>;
 
 /**
@@ -311,17 +362,15 @@ export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   login(input: $input) {
     user {
-      username
-      email
-      id
+      ...UserInfo
     }
     errors {
-      path
-      message
+      ...ErrorInfo
     }
   }
 }
-    `;
+    ${UserInfoFragmentDoc}
+${ErrorInfoFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -382,12 +431,11 @@ export const RegisterDocument = gql`
     mutation Register($input: RegisterInput!) {
   register(input: $input) {
     errors {
-      path
-      message
+      ...ErrorInfo
     }
   }
 }
-    `;
+    ${ErrorInfoFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -420,13 +468,12 @@ export const ListCodeReviewsDocument = gql`
     ...CodeReviewInfo
     ownerId
     owner {
-      id
-      email
-      username
+      ...UserInfo
     }
   }
 }
-    ${CodeReviewInfoFragmentDoc}`;
+    ${CodeReviewInfoFragmentDoc}
+${UserInfoFragmentDoc}`;
 
 /**
  * __useListCodeReviewsQuery__
@@ -457,12 +504,10 @@ export type ListCodeReviewsQueryResult = Apollo.QueryResult<ListCodeReviewsQuery
 export const MeDocument = gql`
     query Me {
   me {
-    id
-    username
-    email
+    ...UserInfo
   }
 }
-    `;
+    ${UserInfoFragmentDoc}`;
 
 /**
  * __useMeQuery__
@@ -490,3 +535,46 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const ReceivedOffersDocument = gql`
+    query ReceivedOffers {
+  receivedOffers {
+    codeReview {
+      ...CodeReviewInfo
+    }
+    sender {
+      ...UserInfo
+    }
+    userId
+    accepted
+    codeReviewId
+  }
+}
+    ${CodeReviewInfoFragmentDoc}
+${UserInfoFragmentDoc}`;
+
+/**
+ * __useReceivedOffersQuery__
+ *
+ * To run a query within a React component, call `useReceivedOffersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReceivedOffersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReceivedOffersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useReceivedOffersQuery(baseOptions?: Apollo.QueryHookOptions<ReceivedOffersQuery, ReceivedOffersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ReceivedOffersQuery, ReceivedOffersQueryVariables>(ReceivedOffersDocument, options);
+      }
+export function useReceivedOffersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ReceivedOffersQuery, ReceivedOffersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ReceivedOffersQuery, ReceivedOffersQueryVariables>(ReceivedOffersDocument, options);
+        }
+export type ReceivedOffersQueryHookResult = ReturnType<typeof useReceivedOffersQuery>;
+export type ReceivedOffersLazyQueryHookResult = ReturnType<typeof useReceivedOffersLazyQuery>;
+export type ReceivedOffersQueryResult = Apollo.QueryResult<ReceivedOffersQuery, ReceivedOffersQueryVariables>;

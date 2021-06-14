@@ -1,3 +1,4 @@
+import { getConnection, getRepository } from "typeorm";
 import { Offer } from "../../../entity/Offer";
 import { Resolvers } from "../../../generated/graphql";
 
@@ -7,19 +8,16 @@ const resolvers: Resolvers = {
       _,
       { input: { codeReviewId, status, userId } }
     ) => {
-      const offer = await Offer.findOne({
-        where: { codeReviewId, userId },
-      });
+      const { raw } = await getConnection()
+        .createQueryBuilder()
+        .update(Offer)
+        .set({ status })
+        .where('"userId" = :userId', { userId })
+        .andWhere('"codeReviewId" = :codeReviewId', { codeReviewId })
+        .returning("*")
+        .execute();
 
-      if (!offer) {
-        return { offer: null };
-      }
-
-      offer.status = status;
-
-      await offer.save();
-
-      return { offer: offer as any };
+      return { offer: raw[0] };
     },
   },
 };

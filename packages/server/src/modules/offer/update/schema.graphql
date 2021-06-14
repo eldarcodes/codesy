@@ -1,0 +1,13 @@
+input UpdateOfferStatusInput {
+  userId: String!
+  codeReviewId: String!
+  status: String!
+}
+
+type UpdateOfferStatusResponse {
+  offer: Offer
+}
+
+type Mutation {
+  updateOfferStatus(input: UpdateOfferStatusInput!): UpdateOfferStatusResponse!
+}

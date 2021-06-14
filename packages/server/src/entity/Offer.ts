@@ -11,8 +11,8 @@ import { CodeReview } from "./CodeReview";
 
 @Entity()
 export class Offer extends BaseEntity {
-  @Column({ type: "bool", default: false })
-  accepted: boolean;
+  @Column({ type: "text", default: "inprogress" })
+  status: string;
 
   @PrimaryColumn()
   userId: string;

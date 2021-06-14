@@ -1,5 +1,5 @@
 import { getConnection } from "typeorm";
-import { Resolvers } from "../../../../generated/graphql";
+import { Resolvers } from "../../../generated/graphql";
 
 const resolvers: Resolvers = {
   Query: {

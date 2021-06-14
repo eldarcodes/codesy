@@ -1,5 +1,5 @@
-import { Offer } from "../../../entity/Offer";
-import { Resolvers } from "../../../generated/graphql";
+import { Offer } from "../../entity/Offer";
+import { Resolvers } from "../../generated/graphql";
 
 const resolvers: Resolvers = {
   Mutation: {

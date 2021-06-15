@@ -112,6 +112,7 @@ export type Offer = {
 export type Query = {
   __typename?: 'Query';
   listCodeReviews: Array<CodeReview>;
+  myOffers: Array<Offer>;
   receivedOffers: Array<Offer>;
   me?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
@@ -298,14 +299,10 @@ export type ReceivedOffersQuery = (
   { __typename?: 'Query' }
   & { receivedOffers: Array<(
     { __typename?: 'Offer' }
-    & Pick<Offer, 'userId' | 'status' | 'codeReviewId'>
-    & { codeReview: (
-      { __typename?: 'CodeReview' }
-      & CodeReviewInfoFragment
-    ), sender: (
-      { __typename?: 'User' }
-      & UserInfoFragment
-    ) }
+    & OfferFragmentFragment
+  )>, myOffers: Array<(
+    { __typename?: 'Offer' }
+    & OfferFragmentFragment
   )> }
 );
 
@@ -632,19 +629,13 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const ReceivedOffersDocument = gql`
     query ReceivedOffers {
   receivedOffers {
-    codeReview {
-      ...CodeReviewInfo
-    }
-    sender {
-      ...UserInfo
-    }
-    userId
-    status
-    codeReviewId
+    ...OfferFragment
+  }
+  myOffers {
+    ...OfferFragment
   }
 }
-    ${CodeReviewInfoFragmentDoc}
-${UserInfoFragmentDoc}`;
+    ${OfferFragmentFragmentDoc}`;
 
 /**
  * __useReceivedOffersQuery__

@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Button, Card } from "semantic-ui-react";
+import { Header, Button, Card, Message } from "semantic-ui-react";
 import Layout from "../components/Layout";
 import {
   ReceivedOffersDocument,
@@ -13,6 +13,7 @@ interface ViewOffersProps {}
 
 const ViewOffers: React.FC<ViewOffersProps> = ({}) => {
   const { data } = useReceivedOffersQuery();
+
   const [updateOfferStatus] = useUpdateOfferStatusMutation({
     update: (store, { data }) => {
       if (!data || !data?.updateOfferStatus.offer) {
@@ -42,6 +43,40 @@ const ViewOffers: React.FC<ViewOffersProps> = ({}) => {
 
   return (
     <Layout showMenu title="Offers">
+      <Header>My Offers</Header>
+      <Card.Group itemsPerRow={4}>
+        {data?.myOffers.map((offer, index) => (
+          <Card key={index}>
+            <Card.Content>
+              <Card.Header>{offer.sender.username}</Card.Header>
+              <Card.Meta>
+                <a
+                  href={offer.codeReview.codeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#4183c4" }}
+                >
+                  Code URL
+                </a>
+              </Card.Meta>
+              <Card.Description>{offer.codeReview.notes}</Card.Description>
+              <Message
+                positive={offer.status === "approved"}
+                error={offer.status === "declined"}
+                info={offer.status === "inprogress"}
+              >
+                <Message.Header>{offer.status}</Message.Header>
+                <p>
+                  {offer.status === "approved" &&
+                    "You can now start reviewing the code"}
+                  {offer.status === "inprogress" &&
+                    "We'll let you know when approved/declined"}
+                </p>
+              </Message>
+            </Card.Content>
+          </Card>
+        ))}
+      </Card.Group>
       <Header>My Code Reviews</Header>
       <Card.Group itemsPerRow={4}>
         {data?.receivedOffers.map((offer, index) => (

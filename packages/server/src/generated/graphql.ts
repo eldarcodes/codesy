@@ -112,6 +112,7 @@ export type Offer = {
 export type Query = {
   __typename?: 'Query';
   listCodeReviews: Array<CodeReview>;
+  myOffers: Array<Offer>;
   receivedOffers: Array<Offer>;
   me?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
@@ -324,6 +325,7 @@ export type OfferResolvers<ContextType = MyContext, ParentType extends Resolvers
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   listCodeReviews?: Resolver<Array<ResolversTypes['CodeReview']>, ParentType, ContextType>;
+  myOffers?: Resolver<Array<ResolversTypes['Offer']>, ParentType, ContextType>;
   receivedOffers?: Resolver<Array<ResolversTypes['Offer']>, ParentType, ContextType>;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;

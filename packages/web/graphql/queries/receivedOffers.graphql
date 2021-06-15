@@ -1,13 +1,8 @@
 query ReceivedOffers {
   receivedOffers {
-    codeReview {
-      ...CodeReviewInfo
-    }
-    sender {
-      ...UserInfo
-    }
-    userId
-    status
-    codeReviewId
+    ...OfferFragment
+  }
+  myOffers {
+    ...OfferFragment
   }
 }

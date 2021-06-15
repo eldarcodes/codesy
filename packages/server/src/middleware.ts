@@ -23,5 +23,6 @@ export const middleware: IMiddlewareTypeMap = {
   },
   Query: {
     receivedOffers: standartMiddleWare,
+    myOffers: standartMiddleWare,
   },
 };

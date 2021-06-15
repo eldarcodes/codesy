@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card } from "semantic-ui-react";
+import { Header, Button, Card } from "semantic-ui-react";
 import Layout from "../components/Layout";
 import {
   ReceivedOffersDocument,
@@ -42,6 +42,7 @@ const ViewOffers: React.FC<ViewOffersProps> = ({}) => {
 
   return (
     <Layout showMenu title="Offers">
+      <Header>My Code Reviews</Header>
       <Card.Group itemsPerRow={4}>
         {data?.receivedOffers.map((offer, index) => (
           <Card key={index}>

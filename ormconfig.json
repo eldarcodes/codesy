@@ -6,7 +6,8 @@
   "password": "postgres",
   "database": "codesy",
   "synchronize": true,
-  "logging": false,
+  "logging": true,
+
   "entities": ["src/entity/**/*.*"],
   "migrations": ["src/migration/**/*.*"],
   "subscribers": ["src/subscriber/**/*.*"],

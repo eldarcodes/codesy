@@ -1,0 +1,7 @@
+mutation UpdateOfferStatus($input: UpdateOfferStatusInput!) {
+  updateOfferStatus(input: $input) {
+    offer {
+      ...OfferFragment
+    }
+  }
+}

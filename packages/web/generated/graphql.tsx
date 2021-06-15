@@ -69,6 +69,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createCodeReview: CreateCodeReviewResponse;
   createOffer: CreateOfferResponse;
+  updateOfferStatus: UpdateOfferStatusResponse;
   login: LoginResponse;
   logout: Scalars['Boolean'];
   register: RegisterResponse;
@@ -82,6 +83,11 @@ export type MutationCreateCodeReviewArgs = {
 
 export type MutationCreateOfferArgs = {
   input: CreateOfferInput;
+};
+
+
+export type MutationUpdateOfferStatusArgs = {
+  input: UpdateOfferStatusInput;
 };
 
 
@@ -100,7 +106,7 @@ export type Offer = {
   userId: Scalars['String'];
   codeReview: CodeReview;
   sender: User;
-  accepted: Scalars['Boolean'];
+  status: Scalars['String'];
 };
 
 export type Query = {
@@ -122,6 +128,17 @@ export type RegisterResponse = {
   errors?: Maybe<Array<Error>>;
 };
 
+export type UpdateOfferStatusInput = {
+  userId: Scalars['String'];
+  codeReviewId: Scalars['String'];
+  status: Scalars['String'];
+};
+
+export type UpdateOfferStatusResponse = {
+  __typename?: 'UpdateOfferStatusResponse';
+  offer?: Maybe<Offer>;
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
@@ -137,6 +154,18 @@ export type CodeReviewInfoFragment = (
 export type ErrorInfoFragment = (
   { __typename?: 'Error' }
   & Pick<Error, 'path' | 'message'>
+);
+
+export type OfferFragmentFragment = (
+  { __typename?: 'Offer' }
+  & Pick<Offer, 'userId' | 'status' | 'codeReviewId'>
+  & { codeReview: (
+    { __typename?: 'CodeReview' }
+    & CodeReviewInfoFragment
+  ), sender: (
+    { __typename?: 'User' }
+    & UserInfoFragment
+  ) }
 );
 
 export type UserInfoFragment = (
@@ -219,6 +248,22 @@ export type RegisterMutation = (
   ) }
 );
 
+export type UpdateOfferStatusMutationVariables = Exact<{
+  input: UpdateOfferStatusInput;
+}>;
+
+
+export type UpdateOfferStatusMutation = (
+  { __typename?: 'Mutation' }
+  & { updateOfferStatus: (
+    { __typename?: 'UpdateOfferStatusResponse' }
+    & { offer?: Maybe<(
+      { __typename?: 'Offer' }
+      & OfferFragmentFragment
+    )> }
+  ) }
+);
+
 export type ListCodeReviewsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -253,7 +298,7 @@ export type ReceivedOffersQuery = (
   { __typename?: 'Query' }
   & { receivedOffers: Array<(
     { __typename?: 'Offer' }
-    & Pick<Offer, 'userId' | 'accepted' | 'codeReviewId'>
+    & Pick<Offer, 'userId' | 'status' | 'codeReviewId'>
     & { codeReview: (
       { __typename?: 'CodeReview' }
       & CodeReviewInfoFragment
@@ -264,6 +309,12 @@ export type ReceivedOffersQuery = (
   )> }
 );
 
+export const ErrorInfoFragmentDoc = gql`
+    fragment ErrorInfo on Error {
+  path
+  message
+}
+    `;
 export const CodeReviewInfoFragmentDoc = gql`
     fragment CodeReviewInfo on CodeReview {
   id
@@ -273,12 +324,6 @@ export const CodeReviewInfoFragmentDoc = gql`
   notes
 }
     `;
-export const ErrorInfoFragmentDoc = gql`
-    fragment ErrorInfo on Error {
-  path
-  message
-}
-    `;
 export const UserInfoFragmentDoc = gql`
     fragment UserInfo on User {
   id
@@ -286,6 +331,20 @@ export const UserInfoFragmentDoc = gql`
   email
 }
     `;
+export const OfferFragmentFragmentDoc = gql`
+    fragment OfferFragment on Offer {
+  codeReview {
+    ...CodeReviewInfo
+  }
+  sender {
+    ...UserInfo
+  }
+  userId
+  status
+  codeReviewId
+}
+    ${CodeReviewInfoFragmentDoc}
+${UserInfoFragmentDoc}`;
 export const CreateCodeReviewDocument = gql`
     mutation CreateCodeReview($input: CreateCodeReviewInput!) {
   createCodeReview(input: $input) {
@@ -462,6 +521,41 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateOfferStatusDocument = gql`
+    mutation UpdateOfferStatus($input: UpdateOfferStatusInput!) {
+  updateOfferStatus(input: $input) {
+    offer {
+      ...OfferFragment
+    }
+  }
+}
+    ${OfferFragmentFragmentDoc}`;
+export type UpdateOfferStatusMutationFn = Apollo.MutationFunction<UpdateOfferStatusMutation, UpdateOfferStatusMutationVariables>;
+
+/**
+ * __useUpdateOfferStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateOfferStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOfferStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOfferStatusMutation, { data, loading, error }] = useUpdateOfferStatusMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateOfferStatusMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOfferStatusMutation, UpdateOfferStatusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOfferStatusMutation, UpdateOfferStatusMutationVariables>(UpdateOfferStatusDocument, options);
+      }
+export type UpdateOfferStatusMutationHookResult = ReturnType<typeof useUpdateOfferStatusMutation>;
+export type UpdateOfferStatusMutationResult = Apollo.MutationResult<UpdateOfferStatusMutation>;
+export type UpdateOfferStatusMutationOptions = Apollo.BaseMutationOptions<UpdateOfferStatusMutation, UpdateOfferStatusMutationVariables>;
 export const ListCodeReviewsDocument = gql`
     query ListCodeReviews {
   listCodeReviews {
@@ -545,7 +639,7 @@ export const ReceivedOffersDocument = gql`
       ...UserInfo
     }
     userId
-    accepted
+    status
     codeReviewId
   }
 }

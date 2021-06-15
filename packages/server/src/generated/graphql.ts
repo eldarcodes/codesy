@@ -69,6 +69,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createCodeReview: CreateCodeReviewResponse;
   createOffer: CreateOfferResponse;
+  updateOfferStatus: UpdateOfferStatusResponse;
   login: LoginResponse;
   logout: Scalars['Boolean'];
   register: RegisterResponse;
@@ -82,6 +83,11 @@ export type MutationCreateCodeReviewArgs = {
 
 export type MutationCreateOfferArgs = {
   input: CreateOfferInput;
+};
+
+
+export type MutationUpdateOfferStatusArgs = {
+  input: UpdateOfferStatusInput;
 };
 
 
@@ -100,6 +106,7 @@ export type Offer = {
   userId: Scalars['String'];
   codeReview: CodeReview;
   sender: User;
+  status: Scalars['String'];
 };
 
 export type Query = {
@@ -119,6 +126,17 @@ export type RegisterInput = {
 export type RegisterResponse = {
   __typename?: 'RegisterResponse';
   errors?: Maybe<Array<Error>>;
+};
+
+export type UpdateOfferStatusInput = {
+  userId: Scalars['String'];
+  codeReviewId: Scalars['String'];
+  status: Scalars['String'];
+};
+
+export type UpdateOfferStatusResponse = {
+  __typename?: 'UpdateOfferStatusResponse';
+  offer?: Maybe<Offer>;
 };
 
 export type User = {
@@ -223,6 +241,8 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   RegisterInput: RegisterInput;
   RegisterResponse: ResolverTypeWrapper<RegisterResponse>;
+  UpdateOfferStatusInput: UpdateOfferStatusInput;
+  UpdateOfferStatusResponse: ResolverTypeWrapper<UpdateOfferStatusResponse>;
   User: ResolverTypeWrapper<User>;
 };
 
@@ -245,6 +265,8 @@ export type ResolversParentTypes = {
   Query: {};
   RegisterInput: RegisterInput;
   RegisterResponse: RegisterResponse;
+  UpdateOfferStatusInput: UpdateOfferStatusInput;
+  UpdateOfferStatusResponse: UpdateOfferStatusResponse;
   User: User;
 };
 
@@ -285,6 +307,7 @@ export type LoginResponseResolvers<ContextType = MyContext, ParentType extends R
 export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createCodeReview?: Resolver<ResolversTypes['CreateCodeReviewResponse'], ParentType, ContextType, RequireFields<MutationCreateCodeReviewArgs, 'input'>>;
   createOffer?: Resolver<ResolversTypes['CreateOfferResponse'], ParentType, ContextType, RequireFields<MutationCreateOfferArgs, 'input'>>;
+  updateOfferStatus?: Resolver<ResolversTypes['UpdateOfferStatusResponse'], ParentType, ContextType, RequireFields<MutationUpdateOfferStatusArgs, 'input'>>;
   login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   register?: Resolver<ResolversTypes['RegisterResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
@@ -295,6 +318,7 @@ export type OfferResolvers<ContextType = MyContext, ParentType extends Resolvers
   userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   codeReview?: Resolver<ResolversTypes['CodeReview'], ParentType, ContextType>;
   sender?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -307,6 +331,11 @@ export type QueryResolvers<ContextType = MyContext, ParentType extends Resolvers
 
 export type RegisterResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['RegisterResponse'] = ResolversParentTypes['RegisterResponse']> = {
   errors?: Resolver<Maybe<Array<ResolversTypes['Error']>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UpdateOfferStatusResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['UpdateOfferStatusResponse'] = ResolversParentTypes['UpdateOfferStatusResponse']> = {
+  offer?: Resolver<Maybe<ResolversTypes['Offer']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -327,6 +356,7 @@ export type Resolvers<ContextType = MyContext> = {
   Offer?: OfferResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RegisterResponse?: RegisterResponseResolvers<ContextType>;
+  UpdateOfferStatusResponse?: UpdateOfferStatusResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
 

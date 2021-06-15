@@ -1,6 +1,6 @@
-import { User } from "../../../../entity/User";
-import { CodeReview } from "../../../../entity/CodeReview";
-import { Resolvers } from "../../../../generated/graphql";
+import { User } from "../../../entity/User";
+import { CodeReview } from "../../../entity/CodeReview";
+import { Resolvers } from "../../../generated/graphql";
 
 const resolvers: Resolvers = {
   Offer: {

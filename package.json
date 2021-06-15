@@ -6,7 +6,9 @@
     ]
   },
   "scripts": {
-    "commit": "cz"
+    "commit": "cz",
+    "start:server": "yarn workspace @codesy/server run start",
+    "start:web": "yarn workspace @codesy/web run dev"
   },
   "devDependencies": {
     "commitizen": "^4.2.4",

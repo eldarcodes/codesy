@@ -16,13 +16,13 @@ const ViewOffers: React.FC<ViewOffersProps> = ({}) => {
 
   const [updateOfferStatus] = useUpdateOfferStatusMutation({
     update: (store, { data }) => {
-      if (!data || !data?.updateOfferStatus.offer) {
-        return null;
-      }
+             if (!data || !data?.updateOfferStatus.offer) {
+            return null;
+                          }
 
-      const { offer } = data.updateOfferStatus;
-      const query = store.readQuery<ReceivedOffersQuery>({
-        query: ReceivedOffersDocument,
+                const { offer } = data.updateOfferStatus;
+             const query = store.readQuery<ReceivedOffersQuery>({
+                 query: ReceivedOffersDocument,
       });
       console.log(query, data.updateOfferStatus);
 

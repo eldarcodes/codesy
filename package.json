@@ -8,12 +8,21 @@
   "scripts": {
     "commit": "cz",
     "start:server": "yarn workspace @codesy/server run start",
-    "start:web": "yarn workspace @codesy/web run dev"
+    "start:web": "yarn workspace @codesy/web run dev",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
-    "lerna": "3.10.7"
+    "husky": "^6.0.0",
+    "lerna": "3.10.7",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.1"
+  },
+  "lint-staged": {
+    "**/*.{js,ts,jsx,tsx}": [
+      "yarn prettier --write"
+    ]
   },
   "config": {
     "commitizen": {

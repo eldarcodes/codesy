@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
   PrimaryColumn,
+  CreateDateColumn,
 } from "typeorm";
 import { User } from "./User";
 import { CodeReview } from "./CodeReview";
@@ -23,6 +24,9 @@ export class Offer extends BaseEntity {
   @ManyToOne(() => User, (user) => user.offers)
   @JoinColumn({ name: "userId" })
   user: Promise<User>;
+
+  @CreateDateColumn()
+  created_at: Date;
 
   @ManyToOne(() => CodeReview, (codeReview) => codeReview.offers)
   @JoinColumn({ name: "codeReviewId" })

@@ -9,7 +9,8 @@ const resolvers: Resolvers = {
         select * from code_review cr
         inner join offer o
         on cr.id = o."codeReviewId"
-        where o."userId" = $1;
+        where o."userId" = $1
+        order by o.created_at desc;
       `,
         [req.session.userId]
       );

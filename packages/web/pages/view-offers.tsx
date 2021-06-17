@@ -15,30 +15,7 @@ const ViewOffers: React.FC<ViewOffersProps> = ({}) => {
   const { data } = useReceivedOffersQuery();
 
   const [updateOfferStatus] = useUpdateOfferStatusMutation({
-    update: (store, { data }) => {
-             if (!data || !data?.updateOfferStatus.offer) {
-            return null;
-                          }
-
-                const { offer } = data.updateOfferStatus;
-             const query = store.readQuery<ReceivedOffersQuery>({
-                 query: ReceivedOffersDocument,
-      });
-      console.log(query, data.updateOfferStatus);
-
-      store.writeQuery({
-        query: ReceivedOffersDocument,
-        data: {
-          ...query,
-          receivedOffers: query?.receivedOffers.map((x) =>
-            x.codeReview.id === offer.codeReview.id &&
-            x.sender.id === offer.sender.id
-              ? offer
-              : x
-          ),
-        },
-      });
-    },
+    refetchQueries: [{ query: ReceivedOffersDocument }],
   });
 
   return (

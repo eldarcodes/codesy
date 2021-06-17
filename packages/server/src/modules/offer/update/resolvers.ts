@@ -8,16 +8,18 @@ const resolvers: Resolvers = {
       _,
       { input: { codeReviewId, status, userId } }
     ) => {
-      const { raw } = await getConnection()
+      const result = await getConnection()
         .createQueryBuilder()
         .update(Offer)
         .set({ status })
-        .where('"userId" = :userId', { userId })
-        .andWhere('"codeReviewId" = :codeReviewId', { codeReviewId })
+        .where('"userId"= :userId and "codeReviewId"= :codeReviewId', {
+          userId,
+          codeReviewId,
+        })
         .returning("*")
         .execute();
 
-      return { offer: raw[0] };
+      return result.raw[0];
     },
   },
 };

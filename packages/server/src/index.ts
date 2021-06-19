@@ -9,9 +9,11 @@ import { createSchema } from "./createSchema";
 import { redis } from "./redis";
 import { applyMiddleware } from "graphql-middleware";
 import { middleware } from "./middleware";
+import { config } from "dotenv-safe";
 
-// @TODO: env variable for this
-const SESSION_SECRET = "%$flsdfjsd7fsdf778SDF";
+config();
+
+const SESSION_SECRET = process.env.SESSION_SECRET;
 const RedisStore = connectRedis(session); // connect node.req.session to redis backing store
 
 async function startApolloServer() {
@@ -22,7 +24,7 @@ async function startApolloServer() {
   app.use(
     cors({
       credentials: true,
-      origin: "http://localhost:3000",
+      origin: process.env.CORS_ORIGIN,
     })
   );
 
@@ -57,7 +59,7 @@ async function startApolloServer() {
   });
 
   app.listen(4000, () =>
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+    console.log(`🚀 Server ready at ${process.env.API_URL}`)
   );
 }
 

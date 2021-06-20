@@ -4,8 +4,8 @@ import { Button } from "semantic-ui-react";
 import withApollo from "../lib/withApollo";
 
 const Landing = () => (
-  <Layout showMenu title="Landing Page | Code Ponder">
-    <h1>Code Ponder 🤔</h1>
+  <Layout showMenu title="Landing Page | Codesy">
+    <h1>Codesy 🤔</h1>
     <h4>Marketplace for Code Reviews</h4>
     <h2>How it works</h2>
     <ol>

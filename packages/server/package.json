@@ -18,6 +18,7 @@
     "@types/graphql": "^14.5.0",
     "@types/node": "^15.0.2",
     "@types/yup": "^0.29.11",
+    "copyfiles": "^2.4.1",
     "dotenv-safe": "^8.2.0",
     "gen-env-types": "^1.3.0",
     "nodemon": "^2.0.7",
@@ -48,7 +49,8 @@
   "author": "Eldar Mirzabekov",
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
-    "build": "tsc -b",
+    "build": "tsc -b && copyfiles -u 1 src/**/*.graphql dist/",
+    "serve": "SET NODE_ENV=production && node dist/index.js",
     "gen": "graphql-codegen --config codegen.yml",
     "gen-env": "gen-env-types .env -o src/env.d.ts -e ."
   }

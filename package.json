@@ -9,7 +9,9 @@
     "commit": "cz",
     "start:server": "yarn workspace @codesy/server run start",
     "start:web": "yarn workspace @codesy/web run dev",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build:server": "lerna run build --scope={@codesy/common,@codesy/server}",
+    "build:web": "lerna run build --scope={@codesy/common,@codesy/web}"
   },
   "devDependencies": {
     "commitizen": "^4.2.4",

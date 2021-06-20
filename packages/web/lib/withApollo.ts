@@ -3,7 +3,10 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const apolloClient = (ctx: any) => {
   return new ApolloClient({
-    uri: process.env.NEXT_PUBLIC_API_URL,
+    uri:
+      process.env.NODE_ENV === "production"
+        ? "https://api.codesy.mirzabekov.space/graphql"
+        : "http://localhost:4000/graphql",
     credentials: "include",
     headers: {
       cookie:

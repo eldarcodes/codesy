@@ -13,7 +13,7 @@ import { config } from "dotenv-safe";
 
 config();
 
-const SESSION_SECRET = process.env.SESSION_SECRET;
+const SESSION_SECRET = "dfsdf54353fsgjhsdgsfd32424";
 const RedisStore = connectRedis(session); // connect node.req.session to redis backing store
 
 async function startApolloServer() {
@@ -24,7 +24,10 @@ async function startApolloServer() {
   app.use(
     cors({
       credentials: true,
-      origin: process.env.CORS_ORIGIN,
+      origin:
+        process.env.NODE_ENV === "production"
+          ? "https://codesy.mirzabekov.space"
+          : "http://localhost:3000",
     })
   );
 
@@ -59,7 +62,7 @@ async function startApolloServer() {
   });
 
   app.listen(4000, () =>
-    console.log(`🚀 Server ready at ${process.env.API_URL}`)
+    console.log(`🚀 Server ready at http://localhost:4000/graphql`)
   );
 }
 

@@ -9,9 +9,9 @@ import { createSchema } from "./createSchema";
 import { redis } from "./redis";
 import { applyMiddleware } from "graphql-middleware";
 import { middleware } from "./middleware";
-import { config } from "dotenv-safe";
+// import { config } from "dotenv-safe";
 
-config();
+// config();
 
 const SESSION_SECRET = "dfsdf54353fsgjhsdgsfd32424";
 const RedisStore = connectRedis(session); // connect node.req.session to redis backing store

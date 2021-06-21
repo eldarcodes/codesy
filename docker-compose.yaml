@@ -38,12 +38,19 @@ services:
       - web
       - server
   goaccess:
-    image: "docker.io/hectormolinero/goaccess:latest"
-    restart: "on-failure:3"
+    image: allinurl/goaccess
+    ports:
+      - 7890:7890
     volumes:
-      - "./goaccess.conf:/root/goaccess/goaccess.conf:ro"
-      - /root/codesy/goaccess/data/:/srv/data
-      - /root/goaccess/.html:/srv/report
-      - /root/logs:/srv/logs
+      - /root/goaccess/config:/srv/config
+      - /root/goaccess/data:/srv/data
+      - /root/goaccess/html:/srv/report
+      - /var/log/nginx:/srv/logs
+    command:
+      [
+        "--no-global-config",
+        "--config-file=/srv/config/goaccess.conf",
+        "--log-file=/srv/logs/access.log",
+      ]
     depends_on:
       - proxy

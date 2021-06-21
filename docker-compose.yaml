@@ -39,14 +39,16 @@ services:
       - server
   goaccess:
     image: allinurl/goaccess
-    command:
-      - goaccess
-      - --no-global-config
-      - --config-file=/srv/data/goaccess.conf
-      - --num-tests=0
+    ports:
+      - 7890:7890
     volumes:
-      - /root/codesy/goaccess/data/:/srv/data
-      - /root/goaccess/.html:/srv/report
-      - /root/logs:/srv/logs
-    depends_on:
-      - proxy
+      - ./goaccess/config:/srv/config
+      - ./goaccess/data:/srv/data
+      - ./goaccess/html:/srv/report
+      - /var/log/nginx:/srv/logs
+    command:
+      [
+        "--no-global-config",
+        "--config-file=/srv/config/goaccess.conf",
+        "--log-file=/srv/logs/access.log",
+      ]

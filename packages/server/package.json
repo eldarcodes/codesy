@@ -49,7 +49,7 @@
   "author": "Eldar Mirzabekov",
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
-    "build": "tsc -b && copyfiles -u 1 src/**/*.graphql dist/",
+    "build": "rm -rf ./dist && tsc && copyfiles -u 1 src/**/*.graphql dist/",
     "serve": "SET NODE_ENV=production && node dist/index.js",
     "gen": "graphql-codegen --config codegen.yml",
     "gen-env": "gen-env-types .env -o src/env.d.ts -e ."

@@ -1,3 +1,3 @@
-# Codesy!
+# Codesy
 
 ### Work in progress...

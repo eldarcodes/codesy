@@ -1,15 +1,16 @@
 FROM node:14
-WORKDIR /usr/app
+# WORKDIR /usr/app
 
-COPY package.json ./
-COPY yarn.lock ./
+COPY . .
 
 RUN yarn
 
-COPY . .
-RUN yarn build:server 
+RUN yarn build:server
 
-ENV NODE_ENV=production
+ENV NODE_ENV production
+
 EXPOSE 4000
-CMD cd ./packages/server && node ./dist/index.js
+WORKDIR ./packages/server
+
+CMD ["node", "./dist/index.js"]
 USER node

@@ -19,10 +19,6 @@ services:
     depends_on:
       - db
       - redis
-  web:
-    image: web
-    ports:
-      - "3000:3000"
   proxy:
     image: abiosoft/caddy:no-stats
     volumes:
@@ -34,5 +30,4 @@ services:
       - "443:443"
       - "7890:7890"
     depends_on:
-      - web
       - server

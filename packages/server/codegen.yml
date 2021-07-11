@@ -1,9 +1,0 @@
-overwrite: true
-schema: "http://localhost:4000/graphql"
-generates:
-  src/generated/graphql.ts:
-    config:
-      contextType: ../../src/context#MyContext
-    plugins:
-      - "typescript"
-      - "typescript-resolvers"

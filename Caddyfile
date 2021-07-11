@@ -1,9 +1,0 @@
-codesy.mirzabekov.space {
-  log / /etc/logs/requests.log "{combined}"
-  proxy / web:3000
-}
-
-api.codesy.mirzabekov.space {
-  log / /etc/logs/requests.log "{combined}"
-  proxy / server:4000
-}

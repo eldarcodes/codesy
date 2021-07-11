@@ -1,4 +1,0 @@
-fragment ErrorInfo on Error {
-  path
-  message
-}

@@ -1,7 +1,8 @@
 import { createConnection, getConnectionOptions } from "typeorm";
-import { __prod__ } from "./constants";
 
-export const createDatabaseConn = async () => {
+import { __prod__ } from "./utils/constants";
+
+export const createTypeormConnection = async () => {
   const connectionOptions = await getConnectionOptions(
     __prod__ ? "production" : "development"
   );
@@ -14,11 +15,13 @@ export const createDatabaseConn = async () => {
         ...connectionOptions,
         name: "default",
       });
+
       return conn;
     } catch (err) {
       console.log(err);
       retries -= 1;
       console.log(`retries left: ${retries}`);
+
       // wait 5 seconds
       await new Promise((res) => setTimeout(res, 5000));
     }

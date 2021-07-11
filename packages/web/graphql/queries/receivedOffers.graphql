@@ -1,8 +1,0 @@
-query ReceivedOffers {
-  receivedOffers {
-    ...OfferFragment
-  }
-  myOffers {
-    ...OfferFragment
-  }
-}

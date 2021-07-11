@@ -1,9 +1,0 @@
-query ListCodeReviews {
-  listCodeReviews {
-    ...CodeReviewInfo
-    ownerId
-    owner {
-      ...UserInfo
-    }
-  }
-}

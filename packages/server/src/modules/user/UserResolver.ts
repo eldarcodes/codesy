@@ -4,7 +4,7 @@ import { User } from "../../entity/User";
 
 @Resolver(User)
 export class UserResolver {
-  @Query((returns) => User, { nullable: true })
+  @Query(returns => User, { nullable: true })
   async me() {
     return null;
   }

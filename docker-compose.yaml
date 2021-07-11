@@ -29,7 +29,6 @@ services:
       - /root/codesy/Caddyfile:/etc/Caddyfile
       - /root/.caddy:/root/.caddy
       - /root/logs:/etc/logs
-      - /root/goaccess/.html:/site/goaccess
     ports:
       - "80:80"
       - "443:443"
@@ -37,20 +36,3 @@ services:
     depends_on:
       - web
       - server
-  goaccess:
-    image: allinurl/goaccess
-    ports:
-      - 7890:7890
-    volumes:
-      - /root/goaccess/config:/srv/config
-      - /root/goaccess/data:/srv/data
-      - /root/goaccess/html:/srv/report
-      - /var/log/nginx:/srv/logs
-    command:
-      [
-        "--no-global-config",
-        "--config-file=/srv/config/goaccess.conf",
-        "--log-file=/srv/logs/access.log",
-      ]
-    depends_on:
-      - proxy

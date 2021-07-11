@@ -1,5 +1,6 @@
 {
   "name": "@codesy/server",
+  "private": true,
   "version": "0.0.1",
   "description": "Built for Developers to code review",
   "keywords": [
@@ -30,5 +31,11 @@
   "author": "Eldar Mirzabekov <prog.eldar@gmail.com>",
   "scripts": {
     "start": "set NODE_ENV=development && nodemon --exec ts-node src/index.ts"
+  },
+  "workspaces": {
+    "nohoist": [
+      "typeorm",
+      "typeorm/**"
+    ]
   }
 }

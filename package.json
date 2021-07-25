@@ -9,9 +9,10 @@
     "commit": "cz",
     "start:server": "yarn workspace @codesy/server run start",
     "start:web": "yarn workspace @codesy/web run dev",
-    "prepare": "husky install",
+    "start:ui": "yarn workspace @codesy/ui run storybook",
     "build:server": "lerna run build --scope={@codesy/common,@codesy/server}",
-    "build:web": "lerna run build --scope={@codesy/common,@codesy/web}"
+    "build:web": "lerna run build --scope={@codesy/common,@codesy/web}",
+    "clear": "rm -rf ./node_modules && rm -rf rm -rf ./packages/**/node_modules && rm -rf ./packages/**/dist"
   },
   "devDependencies": {
     "commitizen": "^4.2.4",

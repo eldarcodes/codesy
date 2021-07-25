@@ -19,8 +19,6 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "build": "tsc -b",
-    "watch": "tsc -w",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

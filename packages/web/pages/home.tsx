@@ -8,7 +8,7 @@ interface HomeProps {}
 const Home: React.FC<HomeProps> = () => {
   return (
     <Layout showMenu title="Home">
-      <Button label="My button" size="large" backgroundColor="red" />
+      <Button label="My button" size="large" />
     </Layout>
   );
 };

@@ -8,7 +8,9 @@ interface HomeProps {}
 const Home: React.FC<HomeProps> = () => {
   return (
     <Layout showMenu title="Home">
-      <Button label="My button" size="large" />
+      <a href="http://localhost:4000/auth/github">
+        <Button label="My button" size="large" />
+      </a>
     </Layout>
   );
 };

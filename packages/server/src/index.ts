@@ -7,6 +7,7 @@ import { RedisClient } from "redis";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { Strategy as GitHubStrategy } from "passport-github";
+import * as cors from "cors";
 
 import { createTypeormConnection } from "./createTypeormConnection";
 import { UserResolver } from "./modules/user/UserResolver";
@@ -30,6 +31,15 @@ async function startApolloServer() {
   const server = new ApolloServer({
     schema,
   });
+
+  app.set("trust proxy", 1);
+
+  app.use(
+    cors({
+      credentials: true,
+      origin: process.env.CORS_ORIGIN,
+    })
+  );
 
   const sessionOption: session.SessionOptions = {
     store: new RedisStore({
@@ -82,15 +92,19 @@ async function startApolloServer() {
 
   app.get("/auth/github", passport.authenticate("github", { session: false }));
 
-  app.get("/oauth/github", passport.authenticate("github"), (req: any, res) => {
-    req.session.userId = req.user.id;
-    req.session.accessToken = req.user.accessToken;
-    req.session.refreshToken = req.user.refreshToken;
+  app.get(
+    "/oauth/github",
+    passport.authenticate("github", { session: false }),
+    (req: any, res) => {
+      req.session.userId = req.user.id;
+      req.session.accessToken = req.user.accessToken;
+      req.session.refreshToken = req.user.refreshToken;
 
-    res.redirect("http://localhost:3000/home");
-  });
+      res.redirect("http://localhost:3000/home");
+    }
+  );
 
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app, cors: false });
 
   app.listen(4000, () =>
     console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)

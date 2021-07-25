@@ -7,7 +7,7 @@
     "username": "postgres",
     "password": "postgres",
     "database": "codesy",
-    "synchronize": true,
+    "synchronize": false,
     "logging": true,
 
     "entities": ["src/entity/**/*.*"],

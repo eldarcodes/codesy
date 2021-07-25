@@ -19,5 +19,5 @@
   },
   "exclude": ["node_modules"],
   "include": ["**/*.ts", "**/*.tsx"],
-  "references": [{ "path": "../common" }]
+  "references": [{ "path": "../common" }, { "path": "../ui" }]
 }

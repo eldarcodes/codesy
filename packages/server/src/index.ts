@@ -3,16 +3,17 @@ import * as Express from "express";
 import * as session from "express-session";
 import * as connectRedis from "connect-redis";
 import * as passport from "passport";
+import * as cors from "cors";
 import { RedisClient } from "redis";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { Strategy as GitHubStrategy } from "passport-github";
-import * as cors from "cors";
 
 import { createTypeormConnection } from "./createTypeormConnection";
 import { UserResolver } from "./modules/user/UserResolver";
 import { User } from "./entity/User";
 import { redis } from "./redis";
+import { MyContext } from "./types/MyContext";
 
 require("dotenv-safe").config();
 
@@ -30,6 +31,7 @@ async function startApolloServer() {
 
   const server = new ApolloServer({
     schema,
+    context: ({ req, res }: MyContext) => ({ req, res }),
   });
 
   app.set("trust proxy", 1);
@@ -88,6 +90,7 @@ async function startApolloServer() {
       }
     )
   );
+
   app.use(passport.initialize());
 
   app.get("/auth/github", passport.authenticate("github", { session: false }));
@@ -96,7 +99,7 @@ async function startApolloServer() {
     "/oauth/github",
     passport.authenticate("github", { session: false }),
     (req: any, res) => {
-      req.session.userId = req.user.id;
+      req.session.userId = req.user.user.id;
       req.session.accessToken = req.user.accessToken;
       req.session.refreshToken = req.user.refreshToken;
 

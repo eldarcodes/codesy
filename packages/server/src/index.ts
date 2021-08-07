@@ -45,7 +45,7 @@ async function startApolloServer() {
 
   const sessionOption: session.SessionOptions = {
     store: new RedisStore({
-      client: (redis as unknown) as RedisClient,
+      client: redis as unknown as RedisClient,
     }),
     name: "qid",
     secret: SESSION_SECRET || "",
@@ -73,8 +73,8 @@ async function startApolloServer() {
             githubId: profile.id,
           },
         });
-        if (user) {
-        } else {
+
+        if (!user) {
           user = await User.create({
             githubId: profile.id,
             pictureUrl: profile._json.avatar_url,

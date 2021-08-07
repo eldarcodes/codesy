@@ -6,9 +6,9 @@
     "port": 5432,
     "username": "postgres",
     "password": "postgres",
-    "database": "codesy",
-    "synchronize": true,
-    "logging": true,
+    "database": "codesy3",
+    "synchronize": false,
+    "logging": false,
 
     "entities": ["src/entity/**/*.*"],
     "migrations": ["src/migration/**/*.*"],

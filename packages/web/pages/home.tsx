@@ -1,16 +1,17 @@
 import React from "react";
 import { Button } from "@codesy/ui";
 import Layout from "../components/Layout";
-import withApollo from "../lib/withApollo";
 
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
   return (
     <Layout showMenu title="Home">
-      <Button label="My button" size="large" />
+      <a href="http://localhost:4000/auth/github">
+        <Button label="Login with GitHub" size="large" />
+      </a>
     </Layout>
   );
 };
 
-export default withApollo({ ssr: false })(Home);
+export default Home;

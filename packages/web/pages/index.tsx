@@ -16,7 +16,7 @@ const Landing: NextPage<Props> = ({ data }: Props) => {
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo(null, ctx);
 
   const { data } = await apolloClient.query({
     query: gql`

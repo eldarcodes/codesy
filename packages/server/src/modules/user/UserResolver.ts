@@ -8,7 +8,6 @@ export class UserResolver {
   @Query(returns => User, { nullable: true })
   async me(@Ctx() { req }: MyContext) {
     const userId = req.session.userId;
-    console.log("call", req.session);
 
     if (userId) {
       return User.findOne(userId);

@@ -7,12 +7,20 @@ import {
 } from "@apollo/client";
 import merge from "deepmerge";
 import isEqual from "lodash/isEqual";
+import { NextPageContext } from "next";
+import { getCookie } from "../utils/getCookie";
+import { COOKIE_NAME } from "../constants";
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
-function createApolloClient() {
+function createApolloClient(ctx?: NextPageContext) {
+  let token = undefined;
+  if (ctx) {
+    token = getCookie(ctx, COOKIE_NAME);
+  }
+
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
 
@@ -22,13 +30,19 @@ function createApolloClient() {
           ? "https://api.codesy.mirzabekov.space/graphql"
           : "http://localhost:4000/graphql",
       credentials: "include",
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     }),
     cache: new InMemoryCache(),
   });
 }
 
-export function initializeApollo(initialState: any = null) {
-  const _apolloClient = apolloClient ?? createApolloClient();
+export function initializeApollo(
+  initialState: any = null,
+  ctx?: NextPageContext
+) {
+  const _apolloClient = apolloClient ?? createApolloClient(ctx);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -64,8 +78,8 @@ export function addApolloState(client: any, pageProps: any) {
   return pageProps;
 }
 
-export function useApollo(pageProps: any) {
+export function useApollo(pageProps: any, ctx?: NextPageContext) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
-  const store = useMemo(() => initializeApollo(state), [state]);
+  const store = useMemo(() => initializeApollo(state, ctx), [state, ctx]);
   return store;
 }

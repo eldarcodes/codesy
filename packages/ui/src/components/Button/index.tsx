@@ -16,7 +16,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <MyButton type="button" {...props}>
-      {label} (my)
+      {label}
     </MyButton>
   );
 };

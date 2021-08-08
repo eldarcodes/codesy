@@ -12,6 +12,7 @@
     "start:ui": "yarn workspace @codesy/ui run storybook",
     "build:server": "lerna run build --scope={@codesy/common,@codesy/server}",
     "build:web": "lerna run build --scope={@codesy/common,@codesy/web}",
+    "build:ui": "yarn workspace @codesy/ui run build-storybook",
     "clear": "rm -rf ./node_modules && rm -rf rm -rf ./packages/**/node_modules && rm -rf ./packages/**/dist"
   },
   "devDependencies": {

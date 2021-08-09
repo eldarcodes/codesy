@@ -44,7 +44,8 @@
   "license": "MIT",
   "author": "Eldar Mirzabekov <prog.eldar@gmail.com>",
   "scripts": {
-    "start": "set NODE_ENV=development && nodemon --exec ts-node src/index.ts"
+    "start": "set NODE_ENV=development && nodemon --exec ts-node src/index.ts",
+    "build": "tsc"
   },
   "workspaces": {
     "nohoist": [

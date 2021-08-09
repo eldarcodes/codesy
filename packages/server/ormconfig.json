@@ -22,13 +22,9 @@
   {
     "name": "production",
     "type": "postgres",
-    "host": "db",
-    "port": 5432,
-    "username": "postgres",
-    "password": "postgres",
-    "database": "codesy",
     "synchronize": true,
     "logging": false,
+
     "entities": ["dist/entity/**/*.*"],
     "migrations": ["dist/migration/**/*.*"],
     "subscribers": ["dist/subscriber/**/*.*"]

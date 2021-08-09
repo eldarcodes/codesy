@@ -14,6 +14,7 @@ import { UserResolver } from "./modules/user/UserResolver";
 import { User } from "./entity/User";
 import { redis } from "./redis";
 import { MyContext } from "./types/MyContext";
+import { __prod__ } from "./utils/constants";
 
 require("dotenv-safe").config();
 
@@ -68,6 +69,7 @@ async function startApolloServer() {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
+      domain: __prod__ ? ".codesy.mirzabekov.space" : undefined,
     },
   };
 
@@ -78,7 +80,7 @@ async function startApolloServer() {
       {
         clientID: process.env.GITHUB_CLIENT_ID!,
         clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-        callbackURL: "http://localhost:4000/oauth/github",
+        callbackURL: `${process.env.SERVER_URL}/oauth/github`,
       },
       async (accessToken, refreshToken, profile: any, done) => {
         let user = await User.findOne({
@@ -116,14 +118,16 @@ async function startApolloServer() {
       req.session.accessToken = req.user.accessToken;
       req.session.refreshToken = req.user.refreshToken;
 
-      res.redirect("http://localhost:3000/home");
+      res.redirect(`${process.env.CORS_ORIGIN}/home`);
     }
   );
 
   server.applyMiddleware({ app, cors: false });
 
-  app.listen(4000, () =>
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+  app.listen(process.env.PORT as any, () =>
+    console.log(
+      `🚀 Server ready at ${process.env.SERVER_URL}${server.graphqlPath}`
+    )
   );
 }
 

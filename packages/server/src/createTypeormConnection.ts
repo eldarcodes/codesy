@@ -11,19 +11,23 @@ export const createTypeormConnection = async () => {
 
   while (retries) {
     try {
-      const conn = await createConnection({
-        ...connectionOptions,
-        name: "default",
-      });
-
-      return conn;
+      return __prod__
+        ? createConnection({
+            ...connectionOptions,
+            url: process.env.DATABASE_URL,
+            name: "default",
+          } as any)
+        : createConnection({
+            ...connectionOptions,
+            name: "default",
+          });
     } catch (err) {
       console.log(err);
       retries -= 1;
       console.log(`retries left: ${retries}`);
 
       // wait 5 seconds
-      await new Promise((res) => setTimeout(res, 5000));
+      await new Promise(res => setTimeout(res, 5000));
     }
   }
 

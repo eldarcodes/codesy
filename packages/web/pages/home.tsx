@@ -7,7 +7,7 @@ interface HomeProps {}
 const Home: React.FC<HomeProps> = () => {
   return (
     <Layout showMenu title="Home">
-      <a href="http://localhost:4000/auth/github">
+      <a href={`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/github`}>
         <Button label="Login with GitHub" size="large" />
       </a>
     </Layout>

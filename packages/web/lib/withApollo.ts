@@ -25,10 +25,7 @@ function createApolloClient(ctx?: NextPageContext) {
     ssrMode: typeof window === "undefined",
 
     link: new HttpLink({
-      uri:
-        process.env.NODE_ENV === "production"
-          ? "https://api.codesy.mirzabekov.space/graphql"
-          : "http://localhost:4000/graphql",
+      uri: `${process.env.NEXT_PUBLIC_SERVER_URL}/graphql`,
       credentials: "include",
       headers: {
         authorization: `Bearer ${token}`,

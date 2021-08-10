@@ -15,6 +15,7 @@ import { User } from "./entity/User";
 import { redis } from "./redis";
 import { MyContext } from "./types/MyContext";
 import { __prod__ } from "./utils/constants";
+import { createUser } from "./utils/createUser";
 
 require("dotenv-safe").config();
 
@@ -83,18 +84,16 @@ async function startApolloServer() {
         callbackURL: `${process.env.SERVER_URL}/oauth/github`,
       },
       async (accessToken, refreshToken, profile: any, done) => {
-        let user = await User.findOne({
-          where: {
-            githubId: profile.id,
-          },
-        });
+        let user = await User.findOne({ where: { githubId: profile.id } });
 
         if (!user) {
-          user = await User.create({
+          user = await createUser({
+            username: profile.username,
+            name: profile._json.name,
             githubId: profile.id,
             pictureUrl: profile._json.avatar_url,
             bio: profile._json.bio,
-          }).save();
+          });
         }
 
         done(null, {

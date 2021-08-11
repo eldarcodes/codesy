@@ -11,6 +11,7 @@ const Landing: NextPage<Props> = ({ data }: Props) => {
   return (
     <Layout showMenu title="Codesy">
       {JSON.stringify(data)}
+      my update
     </Layout>
   );
 };
